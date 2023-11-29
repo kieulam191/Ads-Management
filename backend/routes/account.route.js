@@ -5,6 +5,7 @@ import * as mailUtil from '../utils/mailUtil.js';
 import * as accountMdw from "../middlewares/account.mdw.js";
 import * as accountModel  from '../models/account.model.js';
 import * as areaModel from "../models/area.model.js"
+import areaValidate from "../middlewares/area.mdw.js";
 
 
 const router = express.Router();
@@ -50,7 +51,7 @@ router.get("/:id/actives", async (req, res) => {
     })
 })
 
-router.post("/:id/assignments", async (req, res) => {
+router.post("/:id/assignments", areaValidate, async (req, res) => {
    const user_id = +req.params.id || 0;
    const assignment= req.body;
 
