@@ -22,4 +22,15 @@ export async function insert(email, password, role_type) {
     });
 }
 
+export async function getActiveAccount(id) {
+    const account =  await db('users').where('user_id', id).select('is_active', 'role_type');
+    if(account.length === 0) {
+        return null;
+    }
+    return account[0];
+}
+
+export async function activeAccount(id) {
+    return await db(TABLE).where({user_id: id}).update({is_active: true});
+}
 
