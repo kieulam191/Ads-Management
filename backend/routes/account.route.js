@@ -52,7 +52,7 @@ router.get("/:id/actives", async (req, res) => {
     })
 })
 
-router.post("/:id/assignments", areaValidate, async (req, res) => {
+router.post("/:id/assignments/:role_type", areaValidate, async (req, res) => {
    const user_id = +req.params.id || 0;
    const {province_code, district_code, wards}= req.body;
 
