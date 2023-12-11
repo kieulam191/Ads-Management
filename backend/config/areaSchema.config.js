@@ -4,14 +4,18 @@ import Ajv from 'ajv';
 const areaSchema = {
     type: "object",
     properties: {
-      district: {type: "string"},
-      data: {
+      district_code: {type: "string"},
+      province_code: {type: "string"},
+      wards: {
         type: "array", 
+        items: {
+          type: "string"
+        },
         minItems: 1, 
         uniqueItems: true,
       }
     },
-    required: ["district", "data"],
+    required: ["district_code", "province_code", "wards"],
     additionalProperties: false,
 }
 

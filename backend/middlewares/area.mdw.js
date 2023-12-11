@@ -12,4 +12,18 @@ const checkAreaValid = (req, res, next) => {
     next();
 };
 
+const setPageQuery = (req, res, next) => {
+  if (!req.query.page) {
+      let redirectUrl = req.originalUrl;
+      if (redirectUrl.includes("?")) {
+         redirectUrl += "&page=1";
+      } else {
+         redirectUrl += "?page=1";
+      }
+      res.redirect(redirectUrl);
+  } else {
+      next()
+  }
+}
+
 export default checkAreaValid;
