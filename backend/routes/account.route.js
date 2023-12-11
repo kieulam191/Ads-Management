@@ -4,6 +4,9 @@ import 'dotenv/config';
 import * as mailUtil from '../utils/mailUtil.js';
 import * as accountMdw from "../middlewares/account.mdw.js";
 import * as accountModel  from '../models/account.model.js';
+import * as areaModel from "../models/area.model.js"
+import areaValidate from "../middlewares/area.mdw.js";
+import * as ts from "../utils/timestampUtil.js"
 
 
 const router = express.Router();
@@ -26,6 +29,44 @@ router.post('/', accountMdw.checkAcccountValid, accountMdw.checkAccountExists, a
     res.status(201).json({
         msg: "Account created successfully."
     });
+});
+
+router.get("/:id/actives", async (req, res) => {
+    const id = +req.params.id || 0;
+
+    const state = await accountModel.getActiveAccount(id);
+    if(state === null) {
+        return res.status(204).end;
+    }
+
+    const officer_type = (state["role_type"] === 1 ? 'Ward Officer' :  'District Officer');
+    const msg = (state["is_active"] === true 
+        ? "The account has been activated." 
+        : "The account is not yet activated. Please choose the ward information you need to manage."
+    );
+
+    res.status(200).json({
+        data: state,
+        type: officer_type,
+        msg: msg
+    })
+})
+
+router.post("/:id/assignments/:role_type", areaValidate, async (req, res) => {
+   const user_id = +req.params.id || 0;
+   const {province_code, district_code, wards}= req.body;
+
+    const timestamp = ts.getTS();
+
+    wards.forEach(ward => {
+        areaModel.insert(province_code, district_code, ward, user_id, timestamp);
+    });
+    
+    // wards.map((async(ward) => await areaModel.insert(province_code, district_code, ward, user_id, timestamp)));
+   
+   await accountModel.activeAccount(user_id);
+
+   res.status(201).json({msg: "assign area successfuly"});
 });
 
 export default router;
