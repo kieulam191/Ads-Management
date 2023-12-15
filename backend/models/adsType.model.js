@@ -11,6 +11,14 @@ export async function findAll(page) {
                 .limit(LIMIT);
 }
 
+export async function findById(id) {
+    return await db(TABLE)
+                .where("is_delete", "<>", true)
+                .where("id", "=", id)
+                .select("id", "name")
+                
+}
+
 export async function insert(data) {
     const result = await db(TABLE).insert({name: data});
 
