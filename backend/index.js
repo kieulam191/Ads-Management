@@ -3,7 +3,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import accountRouter from './routes/account.route.js'
 import areaRouter from './routes/area.route.js'
-import adsRouter from './routes/adsType.router.js'
+import adsRouter from './routes/ads.route.js'
 import reportRouter from './routes/report.router.js'
 
 const app = express()
