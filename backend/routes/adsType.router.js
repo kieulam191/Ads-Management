@@ -13,6 +13,17 @@ router.get('/', async (req, res) => {
     return res.status(200).json({data});
 });
 
+router.get('/:id', async (req, res) => {
+    const id = +req.params.id || 0;
+    const data = await adsModel.findById(id);
+
+    if(data.length === 0) {
+        return res.status(204).end();
+    }
+
+    return res.status(200).json({data});
+})
+
 router.post('/', async (req, res) => {
     const name = req.body.name;
 
