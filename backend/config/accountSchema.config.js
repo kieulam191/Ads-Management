@@ -12,9 +12,19 @@ const accountSchema = {
     additionalProperties: false,
 }
 
+const emailSchema = {
+  type: "object",
+  properties: {
+    email: {type: "string", format: "email"},
+  },
+  required: ["email"],
+  additionalProperties: false,
+}
+
 const ajv = new Ajv({allErrors: true}) 
 addFormats(ajv, ['email'])
 
-const validate = ajv.compile(accountSchema)
+const accountValidate = ajv.compile(accountSchema)
+const emailValidate = ajv.compile(emailSchema)
 
-export default validate;
+export { accountValidate, emailValidate };
