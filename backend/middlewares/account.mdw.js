@@ -1,4 +1,4 @@
-import { accountValidate, emailValidate } from "../config/accountSchema.config.js";
+import { accountValidate, emailValidate, otpValidate } from "../config/accountSchema.config.js";
 import * as accountModel  from '../models/account.model.js';
 
 
@@ -34,6 +34,18 @@ export async function checkEmailValid(req, res, next){
   if(!valid && check === null) {
       return res.status(409).json({
           msg: "Email invalid"
+      })
+  }
+
+  next()
+}
+
+export async function checkOTPValid(req, res, next){
+  const valid = otpValidate(req.body)
+
+  if(!valid) {
+      return res.status(409).json({
+          msg: "OTP info invalid"
       })
   }
 

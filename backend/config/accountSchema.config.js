@@ -21,10 +21,21 @@ const emailSchema = {
   additionalProperties: false,
 }
 
+const otpSchema = {
+  type: "object",
+  properties: {
+    email: {type: "string", format: "email"},
+    otp: {type: "string"}
+  },
+  required: ["email", "otp"],
+  additionalProperties: false,
+}
+
 const ajv = new Ajv({allErrors: true}) 
 addFormats(ajv, ['email'])
 
 const accountValidate = ajv.compile(accountSchema)
 const emailValidate = ajv.compile(emailSchema)
+const otpValidate = ajv.compile(otpSchema)
 
-export { accountValidate, emailValidate };
+export { accountValidate, emailValidate, otpValidate };

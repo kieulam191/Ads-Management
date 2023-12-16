@@ -9,10 +9,11 @@ import * as areaModel from "../models/area.model.js"
 import areaValidate from "../middlewares/area.mdw.js";
 import * as ts from "../utils/timestampUtil.js"
 import { LocalStorage } from 'node-localstorage/LocalStorage.js';
+import * as hashUtil from "../utils/hashUtil.js"
 
 
 const router = express.Router();
-const OTP_MIN_LIMIX = 0;
+const OTP_MIN_LIMIX = 3;
 let  localStorage;
 
 router.post('/', accountMdw.checkAcccountValid, accountMdw.checkAccountExists, async (req, res) => {
@@ -73,7 +74,7 @@ router.post("/:id/assignments/:role_type", areaValidate, async (req, res) => {
    res.status(201).json({msg: "assign area successfuly"});
 });
 
-router.post('/forgot-password', accountMdw.checkEmailValid, (req, res) => {
+router.post('/forgot-password', accountMdw.checkEmailValid, async (req, res) => {
     const email = req.body.email;
 
     const otp_code = generator.generate({
@@ -83,9 +84,18 @@ router.post('/forgot-password', accountMdw.checkEmailValid, (req, res) => {
         numbers: true,
     })
     localStorage = new LocalStorage("./storage")
-    localStorage.setItem(email, 123456);
+    console.log(otp_code);
+
+    const hash = await hashUtil.hash(otp_code);
+    localStorage.setItem(email, hash);
+
+    mailUtil.sendOTPMail(email, otp_code);
 
     ts.start();
+    setTimeout(() => {
+        localStorage.removeItem(email);
+    }, OTP_MIN_LIMIX * 60 * 1000)
+
     return res.status(200).json({
         msg: "send OTP code successfully"
     });
@@ -93,7 +103,7 @@ router.post('/forgot-password', accountMdw.checkEmailValid, (req, res) => {
     
 })
 
-router.post('/verify-otp', (req, res) => {
+router.post('/verify-otp', accountMdw.checkOTPValid, async (req, res) => {
     const email = req.body.email;
     const otp_receive = req.body.otp;
     const min_receive = +ts.getMinute();
@@ -102,16 +112,18 @@ router.post('/verify-otp', (req, res) => {
         return res.status(410).end();
     }
 
-    if(min_receive > OTP_MIN_LIMIX) {
+    if(min_receive > OTP_MIN_LIMIX - 1) {
         ts.stop();
         return res.status(403).json({
             msg: "OTP code expire"
         })
     }
 
-    if(+localStorage.getItem(email) !== +otp_receive) {
+    const result = await hashUtil.compare(otp_receive, localStorage.getItem(email));
+
+    if(!result) {
         return res.status(400).json({
-            msg: "OTP incorrect"
+            msg: "OTP code incorrect"
         })
     }
 
