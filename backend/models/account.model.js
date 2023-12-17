@@ -34,3 +34,14 @@ export async function activeAccount(id) {
     return await db(TABLE).where({user_id: id}).update({is_active: true});
 }
 
+export async function resetPassword(id, new_password) {
+    const result = await db(TABLE).where( {
+        user_id: id
+    }).update({password: new_password});
+
+    if(result === 0) {
+        return null;
+    }
+
+    return result;
+}

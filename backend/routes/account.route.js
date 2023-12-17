@@ -127,8 +127,28 @@ router.post('/verify-otp', accountMdw.checkOTPValid, async (req, res) => {
         })
     }
 
+    const user = await accountModel.findByEmail(email);
     return res.status(200).json({
+        user_id: user.user_id, 
         msg: "OTP code successfully"
+    })
+})
+
+router.patch('/:id/reset-password', accountMdw.checkPasswordValid, async (req, res) => {
+    const { new_password } = req.body;
+    const id = +req.params.id || 0;
+
+    const pass_hash = await hashUtil.hash(new_password);
+    const data = await accountModel.resetPassword(id, pass_hash);
+
+    if(data === null) {
+        return res.status(200).json({
+            msg: 'reset password failure'
+        })
+    }
+
+    return res.status(200).json({
+        msg: 'reset password successfully'
     })
 })
 

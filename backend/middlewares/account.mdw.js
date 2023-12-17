@@ -1,4 +1,4 @@
-import { accountValidate, emailValidate, otpValidate } from "../config/accountSchema.config.js";
+import { accountValidate, emailValidate, otpValidate, passwordValidate } from "../config/accountSchema.config.js";
 import * as accountModel  from '../models/account.model.js';
 
 
@@ -46,6 +46,18 @@ export async function checkOTPValid(req, res, next){
   if(!valid) {
       return res.status(409).json({
           msg: "OTP info invalid"
+      })
+  }
+
+  next()
+}
+
+export async function checkPasswordValid(req, res, next){
+  const valid = passwordValidate(req.body)
+
+  if(!valid) {
+      return res.status(409).json({
+          msg: "password invalid. Length password at least is 6"
       })
   }
 

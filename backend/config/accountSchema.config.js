@@ -31,11 +31,27 @@ const otpSchema = {
   additionalProperties: false,
 }
 
+const passwordSchema = {
+  type: "object",
+  properties: {
+    new_password: {type: "string",  "minLength": 6},
+   
+  },
+  required: ["new_password"],
+  additionalProperties: false,
+}
+
 const ajv = new Ajv({allErrors: true}) 
 addFormats(ajv, ['email'])
 
 const accountValidate = ajv.compile(accountSchema)
 const emailValidate = ajv.compile(emailSchema)
 const otpValidate = ajv.compile(otpSchema)
+const passwordValidate = ajv.compile(passwordSchema)
 
-export { accountValidate, emailValidate, otpValidate };
+export { 
+  accountValidate, 
+  emailValidate, 
+  otpValidate,
+  passwordValidate,
+};
