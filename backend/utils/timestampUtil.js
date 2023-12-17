@@ -26,3 +26,7 @@ export function getMinute() {
 export function isRunning() {
    return timer.isRunning();
 }
+
+export function convertTS(dateTime = Date()) {
+    return new Date(dateTime).toISOString();
+}
