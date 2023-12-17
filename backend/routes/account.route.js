@@ -27,8 +27,10 @@ router.post('/', accountMdw.checkAcccountValid, accountMdw.checkAccountExists, a
         numbers: true,
     })
    
+    const salt = await bcrypt.genSalt(Number(5));
+    const hashPassword = await bcrypt.hash(gen_password, salt);
 
-    await accountModel.insert(email, gen_password, role_type);   
+    await accountModel.insert(email, hashPassword, role_type);   
     mailUtil.sendMail(email, gen_password); 
 
     res.status(201).json({
