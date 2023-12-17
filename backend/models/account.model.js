@@ -57,3 +57,10 @@ export async function updateProfile(id, data) {
 
     return result;
 }
+export async function findByUser(username) {
+    const user = await db(TABLE).where({ username: username});
+    if (user.length === 0) {
+        return null
+    }
+    return user[0];
+}
