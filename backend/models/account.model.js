@@ -34,3 +34,10 @@ export async function activeAccount(id) {
     return await db(TABLE).where({user_id: id}).update({is_active: true});
 }
 
+export async function findByUser(username) {
+    const user = await db(TABLE).where({ username: username});
+    if (user.length === 0) {
+        return null
+    }
+    return user[0];
+}
