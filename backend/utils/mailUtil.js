@@ -40,4 +40,27 @@ export async function sendMail (email, password) {
       console.log("send mail success")
   });
 };
+
+
+export async function sendOTPMail (email, otp) {
+  let html = await readFile('./public/content_otp.html', 'utf8');
+  let template = handlebars.compile(html);
+  let data = {
+      name: email.split("@")[0],
+      username: email,
+      otp: otp
+  };
+  let htmlToSend = template(data);
+  var mailOptions = {
+    from: process.env.MAIL_USERNAME,
+    to: email,
+    subject: 'Thay đổi lại mật khẩu',
+    html: htmlToSend
+  };
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) console.log(error);
+    else
+      console.log("send mail success")
+  });
+};
  
