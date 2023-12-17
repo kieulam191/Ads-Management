@@ -142,13 +142,28 @@ router.patch('/:id/reset-password', accountMdw.checkPasswordValid, async (req, r
     const data = await accountModel.resetPassword(id, pass_hash);
 
     if(data === null) {
-        return res.status(200).json({
+        return res.status(400).json({
             msg: 'reset password failure'
         })
     }
 
     return res.status(200).json({
         msg: 'reset password successfully'
+    })
+})
+
+router.patch('/:id/profiles', async (req, res) => {
+    const id = +req.params.id || 0;
+    const data = accountModel.updateProfile(id, req.body);
+
+    if(data === null) {
+        return res.status(400).json({
+            msg: 'update profile faluire'
+        });
+    }
+
+    return res.status(200).json({
+        msg: 'update profile successfully'
     })
 })
 
