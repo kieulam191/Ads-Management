@@ -45,3 +45,15 @@ export async function resetPassword(id, new_password) {
 
     return result;
 }
+
+export async function updateProfile(id, data) {
+    const result = await db(TABLE).where( {
+        user_id: id
+    }).update(data);
+
+    if(result === 0) {
+        return null;
+    }
+
+    return result;
+}
