@@ -12,7 +12,16 @@ const VERIFY_STATE = {
     ACCEPTED: 1
 };
 
+const REPORT_STATE = {
+    IN_PROCESS: 0,
+    DONE: 1
+};
+
+const USER_REPORT_FIELDS = ["report_id", "location_id", "fullname", "report_content", "report_type", "state", "report_handler", "created_at"];
+
 export {
     ADVERTISE_ACTION,
     VERIFY_STATE,
+    REPORT_STATE,
+    USER_REPORT_FIELDS,
 };
