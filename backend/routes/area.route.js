@@ -17,6 +17,33 @@ router.get('/', async (req, res) => {
     });
 });
 
+router.get('/assigns/:user_id/districts', async (req, res) => {
+    const user_id = req.params.user_id;
+
+    const district = await areaModel.findDistrictByUserId(user_id);
+
+    if(district === null) {
+        return res.status(204).end();
+    }
+
+    return res.status(200).json({
+        data: district
+    })
+});
+
+router.get('/assigns/:user_id/wards', async (req, res) => {
+    const user_id = req.params.user_id;
+
+    const wards = await areaModel.findWardsByUserId(user_id);
+
+    if(wards === null) {
+        return res.status(204).end();
+    }
+
+    return res.status(200).json({
+        data: wards
+    })
+});
 
 router.get('/search', async (req, res) => {
     const {ward, district, email} = req.query;

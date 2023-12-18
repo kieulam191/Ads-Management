@@ -145,3 +145,36 @@ export async function search(con, page) {
   return result;
 }
 
+export async function findDistrictByUserId(id) {
+    const result =  await db(TABLE)
+            .where({user_id: id})
+            .where("states", "=", "new")
+            .where("is_delete", "<>", true)
+            .select("district_code")
+            .first();
+
+            console.log(result);
+
+    if(result === undefined) {
+        return null;
+    }
+
+    return result;
+}
+
+export async function findWardsByUserId(id) {
+    const result =  await db(TABLE)
+            .where({user_id: id})
+            .where("states", "=", "new")
+            .where("is_delete", "<>", true)
+            .select("ward_code")
+
+            console.log(result);
+
+    if(result.length === 0) {
+        return null;
+    }
+
+    return result;
+}
+
