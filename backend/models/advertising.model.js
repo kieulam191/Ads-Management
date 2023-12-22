@@ -57,3 +57,11 @@ export async function remove(id) {
 
     return result;
 }
+
+export async function getAdsLocationApprovals() {
+    return await db(TABLE).where({
+        is_verified: -1
+    })
+    .where("is_valid", "=", true)
+    .where("is_delete", "<>", true).select("board_id", "location_id", "board_type", "size")
+}
