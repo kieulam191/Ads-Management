@@ -18,10 +18,12 @@ const REPORT_STATE = {
 };
 
 const USER_REPORT_FIELDS = ["report_id", "location_id", "fullname", "report_content", "report_type", "state", "report_handler", "created_at"];
+const BOARD_DETAIL_FIELDS = ["board_id", "image_url", "expiration_date"];
 
 export {
     ADVERTISE_ACTION,
     VERIFY_STATE,
     REPORT_STATE,
     USER_REPORT_FIELDS,
+    BOARD_DETAIL_FIELDS,
 };

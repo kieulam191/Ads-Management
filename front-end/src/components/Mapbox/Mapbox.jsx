@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
 //import ReactMapboxGl from "react-mapbox-gl";
 import { token } from "../../constains/token";
+// eslint-disable-next-line import/no-webpack-loader-syntax
 import mapboxgl from 'mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 
 import './mapbox.css'
