@@ -1,10 +1,10 @@
 import {React, useState} from 'react';
-
-import { Form, Input, Button, Checkbox } from 'antd';
-
+import { useNavigate } from 'react-router';
+import axios from 'axios';
+import './login.css'
 
 const LoginForm = () => {
-  
+  const goRouter = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -16,47 +16,57 @@ const LoginForm = () => {
       setPassword(value);
     }
   };
-  const handleLogin = (values) => {
-    console.log('Đăng nhập:', values);
-    history.push('/');
+  const handleLogin = () => {
+    if(username && password){
+        const user = {username: username, password: password};
+        let dataLogin = JSON.stringify(user);
+        let config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: 'http://localhost:8080/',
+            headers:{
+              'Content-Type': 'application/json'
+            },
+            data: dataLogin
+        };
+        axios.request(config)
+        .then(res => {
+        console.log(JSON.stringify(res.data))
+        })
+
+        goRouter('/');
+    }
+    
   };
 
   return (
-    <div>
+    <div className='login'>
       <h2>Đăng nhập</h2>
-      <Form
-        name="loginForm"
-        initialValues={{ remember: true }}
-        onFinish={handleLogin}
-      >
-        <Form.Item
-          label="Tên đăng nhập"
-          name="username"
-          rules={[{ required: true, message: 'Vui lòng nhập tên đăng nhập!' }]}
-          onChange={handleInputChange}
-        >
-          <Input  />
-        </Form.Item>
-
-        <Form.Item
-          label="Mật khẩu"
-          name="password"
-          rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
-          onChange={handleInputChange}
-        >
-          <Input.Password />
-        </Form.Item>
-
-        <Form.Item name="remember" valuePropName="checked">
-          <Checkbox>Nhớ đăng nhập</Checkbox>
-        </Form.Item>
-
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Đăng nhập
-          </Button>
-        </Form.Item>
-      </Form>
+      <form>
+        <label>
+          <span>Tên đăng nhập:</span>
+          <input
+            type="text"
+            name="username"
+            value={username}
+            onChange={handleInputChange}
+            required
+          />
+        </label>
+        <label>
+          <span>Mật khẩu:</span>
+          <input
+            type="password"
+            name="password"
+            value={password}
+            onChange={handleInputChange}
+            required
+          />
+        </label>
+        <button className='btn' type="button" onClick={handleLogin}>
+          Đăng nhập
+        </button>
+      </form>
     </div>
   );
 };

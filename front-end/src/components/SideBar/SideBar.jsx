@@ -1,7 +1,8 @@
-import React from 'react'
+import {React, useState} from 'react'
 import {  Menu } from 'antd';
 import {  useNavigate } from 'react-router';
 
+import './sidebar.css'
 
 const SideBars = () => {
     const go = useNavigate();
@@ -16,8 +17,8 @@ const SideBars = () => {
     }
 
   return (
-    <div>
-        <Menu onClick={handleMenuClick} theme="light" defaultSelectedKeys={['1']} mode="inline" items={items}/>
+    <div className="side-bar">
+        <Menu theme="dark" onClick={handleMenuClick} defaultSelectedKeys={['1']} mode="inline" items={items}/>
     </div>
   )
 }

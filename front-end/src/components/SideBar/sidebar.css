@@ -1,0 +1,8 @@
+.side-bar{
+    width: 100px;
+    height: 100%;
+
+    position: absolute;
+    left: 0;
+    top: 0;
+}
