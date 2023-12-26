@@ -59,6 +59,11 @@ form {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.ward {
+    margin-left: 20px;
+}
+
+
 label {
     display: block;
     margin-bottom: 8px;
@@ -126,4 +131,15 @@ tr:hover {
 td a {
     text-decoration: none;
     color: #2196F3;
+    margin-right: 5px;
 }
+
+td a:hover {
+    text-decoration: underline;
+}
+
+.index {
+    text-align: center;
+}
+
+
