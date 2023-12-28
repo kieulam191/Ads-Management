@@ -1,7 +1,9 @@
 import { useRef, useEffect, useState } from 'react';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { token } from "../../constains/token";
 import mapboxgl from 'mapbox-gl';
 
+import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import './mapbox.css'
 
 mapboxgl.accessToken = token;
@@ -22,6 +24,16 @@ const Mapbox = () => {
             zoom: zoom
         });
 
+        map.current.addControl(
+            new MapboxGeocoder({
+                accessToken: mapboxgl.accessToken,
+                //limited searching VN
+                countries:'vn',
+                // //limited searching TPHCM 
+                bbox: [106.358, 10.313, 107.377, 11.183],
+                mapboxgl: mapboxgl
+            })
+        );
         map.current.on('move', () => {
             setLng(map.current.getCenter().lng.toFixed(4));
             setLat(map.current.getCenter().lat.toFixed(4));
