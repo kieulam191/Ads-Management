@@ -16,6 +16,13 @@ const router = express.Router();
 const OTP_MIN_LIMIX = 3;
 let  localStorage;
 
+router.get('/', async (req, res) => {
+    const data = await accountModel.findAll();
+    return res.status(200).json(
+        {accounts: data}
+    )
+})
+
 router.post('/', accountMdw.checkAcccountValid, accountMdw.checkAccountExists, async (req, res) => {
     const email = req.body.email;
     const role_type = +req.body.role_type || 1;

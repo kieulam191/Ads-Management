@@ -4,7 +4,7 @@ import  * as usertoken from "../models/usertoken.model.js";
 const generateTokens = async (username,password) => {
     try {
         const payload = { username: username, password:password };
-        const access = process.env.ACCESS_TOKEN_PRIVATE_KEY ||'REFRESH_TOKEN_PRIVATE_KEY';
+        const access = process.env.ACCESS_TOKEN_PRIVATE_KEY ||'ACCESS_TOKEN_PRIVATE_KEY';
         const refresh = process.env.REFRESH_TOKEN_PRIVATE_KEY || 'REFRESH_TOKEN_PRIVATE_KEY';
         const accessToken = jwt.sign(
             payload,

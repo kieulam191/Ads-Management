@@ -9,6 +9,9 @@ import positionRouter from './routes/position.route.js'
 import testRouter from './routes/test.route.js'
 import authMDW from './middlewares/auth.mdw.js'
 import authRoutes from "./routes/auth.route.js";
+import provinceRouter from './routes/province.route.js';
+import dictrictRouter from './routes/district.route.js';
+import wardRouter from './routes/ward.route.js'
 const app = express()
 const PORT = 3000
 app.use(express.json())
@@ -23,6 +26,9 @@ app.use('/ads', adsRouter)
 app.use('/reports', reportRouter)
 app.use('/pos/', positionRouter)
 app.use('/test/',testRouter)
-app.use("/auth", authRoutes);;
+app.use("/auth", authRoutes);
+app.use('/provinces',provinceRouter);
+app.use('/dictricts',dictrictRouter);
+app.use('/wards',wardRouter);
 app.listen(PORT, () => console.log(`app listening at http://localhost:${PORT}`))
 
