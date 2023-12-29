@@ -18,6 +18,7 @@ import ReportList from "./components/Type/report/ReportList";
 import AreaList from "./components/Areas/AreaList";
 import AreaForm from "./components/Areas/AreaForm";
 import Sidebar from "./components/Sidebar";
+import AccountList from "./components/admin/account/AccountList";
 import { AppProvider } from "./context/AppContext";
 
 import "./App.css";
@@ -62,6 +63,7 @@ function App() {
               <Route path="/reports/:id" exact component={ReportForm} />
               <Route path="/areas" exact component={AreaList} />
               <Route path="/areas/add" exact component={AreaForm} />
+              <Route path="/accounts" exact component={AccountList} />
             </Switch>
           </div>
         </AppProvider>

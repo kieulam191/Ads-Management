@@ -9,6 +9,8 @@ const initialState = {
   positionType: [],
   reportType: [],
   areas: [],
+  accounts: [],
+  handlerReports: [],
 };
 
 const AppContext = createContext();
@@ -31,6 +33,10 @@ const appReducer = (state, action) => {
       return { ...state, reportType: action.payload };
     case "SET_AREAS":
       return { ...state, areas: action.payload };
+    case "SET_ACCOUNTS":
+      return { ...state, accounts: action.payload };
+    case "SET_HANDLER_REPORTS":
+      return { ...state, accounts: action.payload };
     default:
       return state;
   }

@@ -36,6 +36,9 @@ const Sidebar = () => {
         <li>
           <Link to="/reports">report type</Link>
         </li>
+        <li>
+          <Link to="/accounts">account</Link>
+        </li>
       </ul>
     </div>
   );
