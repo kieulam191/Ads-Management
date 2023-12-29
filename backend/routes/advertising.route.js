@@ -1,5 +1,6 @@
 import express from 'express';
 import * as advertisingModel from '../models/advertising.model.js'
+import * as adsDetailModel from '../models/adsDetail.model.js'
 import {
     ADVERTISE_ACTION,
     VERIFY_STATE,
@@ -26,6 +27,17 @@ router.get('/approvals', async(req, res) => {
 router.get('/:id', async (req, res) => {
     const id = +req.params.id || 0;
     const data = await advertisingModel.findById(id);
+
+    if(data.length === 0) {
+        return res.status(204).end();
+    }
+
+    return res.status(200).json({data});
+})
+
+router.get('/detail/:id', async (req, res) => {
+    const id = +req.params.id || 0;
+    const data = await adsDetailModel.findById(id);
 
     if(data.length === 0) {
         return res.status(204).end();
