@@ -1,15 +1,15 @@
-import React, { useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
-import axios from '../../services/api';
-import { AppContext } from '../../context/AppContext';
+import React, { useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
+import axios from "../../../services/api";
+import { AppContext } from "../../../context/AppContext";
 
 const AdBoardList = () => {
   const { state, dispatch } = useContext(AppContext);
 
   useEffect(() => {
     const fetchAdBoards = async () => {
-      const response = await axios.get('/adboards');
-      dispatch({ type: 'SET_AD_BOARDS', payload: response.data });
+      const response = await axios.get("/adboards");
+      dispatch({ type: "SET_AD_BOARDS", payload: response.data });
     };
 
     fetchAdBoards();

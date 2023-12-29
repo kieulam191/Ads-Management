@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import axios from "../../../services/api";
-import { AppContext } from "../../../context/AppContext";
+import axios from "../../../../services/api";
+import { AppContext } from "../../../../context/AppContext";
 
 const RepostList = () => {
   const { state, dispatch } = useContext(AppContext);

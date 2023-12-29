@@ -1,10 +1,10 @@
 import React, { useEffect, useContext } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { useFormik } from "formik";
-import axios from "../../../services/api";
-import { AppContext } from "../../../context/AppContext";
+import axios from "../../../../services/api";
+import { AppContext } from "../../../../context/AppContext";
 
-const AdvertisingForm = () => {
+const AdTableForm = () => {
   const { id } = useParams();
   const history = useHistory();
   const { state, dispatch } = useContext(AppContext);
@@ -24,15 +24,15 @@ const AdvertisingForm = () => {
     },
     onSubmit: async (values) => {
       if (id) {
-        await axios.patch(`/ads/types/${id}`, values);
+        await axios.patch(`/ads/table-types/${id}`, values);
       } else {
-        await axios.post("/ads/types", values);
+        await axios.post("/ads/table-types", values);
       }
 
-      const response = await axios.get("/ads/types");
+      const response = await axios.get("/ads/table-types");
       dispatch({ type: "SET_AD_TYPES", payload: response.data.data });
 
-      history.push("/Advertisings");
+      history.push("/adtables");
     },
   });
 
@@ -49,7 +49,7 @@ const AdvertisingForm = () => {
 
   return (
     <div>
-      <h2>{id ? "Edit" : "Add"} Ad types</h2>
+      <h2>{id ? "Edit" : "Add"} ad table types</h2>
       <form onSubmit={formik.handleSubmit}>
         <label>
           Name:
@@ -64,10 +64,10 @@ const AdvertisingForm = () => {
             <div>{formik.errors.name}</div>
           ) : null}
         </label>
-        <button type="submit">{id ? "Update" : "Add"} Ad type</button>
+        <button type="submit">{id ? "Update" : "Add"} Ad table type</button>
       </form>
     </div>
   );
 };
 
-export default AdvertisingForm;
+export default AdTableForm;

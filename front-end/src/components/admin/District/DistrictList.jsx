@@ -1,15 +1,15 @@
-import React, { useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
-import axios from '../../services/api';
-import { AppContext } from '../../context/AppContext';
+import React, { useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
+import axios from "../../../services/api";
+import { AppContext } from "../../../context/AppContext";
 
 const DistrictList = () => {
   const { state, dispatch } = useContext(AppContext);
 
   useEffect(() => {
     const fetchDistricts = async () => {
-      const response = await axios.get('/districts');
-      dispatch({ type: 'SET_DISTRICTS', payload: response.data });
+      const response = await axios.get("/districts");
+      dispatch({ type: "SET_DISTRICTS", payload: response.data });
     };
 
     fetchDistricts();

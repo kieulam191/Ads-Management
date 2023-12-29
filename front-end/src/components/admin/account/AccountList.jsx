@@ -9,7 +9,7 @@ const AccountList = () => {
   useEffect(() => {
     const fetchAccount = async () => {
       const response = await axios.get("/accounts");
-      dispatch({ type: "SET_ACCOUNTS", payload: response.data });
+      dispatch({ type: "SET_ACCOUNTS", payload: response.data.accounts });
     };
 
     fetchAccount();
@@ -38,10 +38,11 @@ const AccountList = () => {
               <td>{adBoard.fullname}</td>
               <td>{adBoard.birthday}</td>
               <td>{adBoard.email}</td>
-              <td>{adBoard.role}</td>
+              <td>{adBoard.phone_number}</td>
+              <td>{adBoard.role_type}</td>
               {/* <td>{adBoard.image_url}</td> */}
               <td>
-                <Link to={`/adboards/${adBoard.id}`}>Edit</Link>
+                <Link to={`/adboards/${adBoard.id}`}>role</Link>
               </td>
             </tr>
           ))}

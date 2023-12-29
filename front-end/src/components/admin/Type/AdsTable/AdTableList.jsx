@@ -1,22 +1,25 @@
 import React, { useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import axios from "../../../services/api";
-import { AppContext } from "../../../context/AppContext";
+import axios from "../../../../services/api";
+import { AppContext } from "../../../../context/AppContext";
 
-const AdvertisingList = () => {
+const AdTableList = () => {
   const { state, dispatch } = useContext(AppContext);
 
   useEffect(() => {
-    const fetchAdType = async () => {
-      const response = await axios.get("/ads/types", {
+    const fetchAdTables = async () => {
+      const response = await axios.get("/ads/table-types", {
         headers: {
           Authorization: "Bearer " + "admin",
         },
       });
-      dispatch({ type: "SET_AD_TYPES", payload: response.data.data });
+
+      console.log(response.data.data);
+
+      dispatch({ type: "SET_AD_TABLE_TYPES", payload: response.data.data });
     };
 
-    fetchAdType();
+    fetchAdTables();
   }, [dispatch]);
 
   async function handleClick(id) {
@@ -26,21 +29,21 @@ const AdvertisingList = () => {
     var confirmed = confirm("are you sure?");
     // Kiểm tra kết quả
     if (confirmed) {
-      await axios.delete(`/ads/types/${id}`, {
+      await axios.delete(`/ads/table-types/${id}`, {
         headers: {
           Authorization: "Bearer " + "admin",
         },
       });
 
-      const response = await axios.get("/ads/types");
-      dispatch({ type: "SET_AD_TYPES", payload: response.data.data });
+      const response = await axios.get("/ads/table-types");
+      dispatch({ type: "SET_AD_TABLE_TYPES", payload: response.data.data });
     }
   }
 
   return (
     <div>
-      <h2>Ads Type List</h2>
-      <Link to="/advertisings/add">Add ads type</Link>
+      <h2>Table Type List</h2>
+      <Link to="/adtables/add">Add ads table type</Link>
       <table>
         <thead>
           <tr>
@@ -49,12 +52,12 @@ const AdvertisingList = () => {
           </tr>
         </thead>
         <tbody>
-          {state.adtypes.map((ad) => (
-            <tr key={ad.id}>
-              <td>{ad.name}</td>
+          {state.adTableType.map((adtable) => (
+            <tr key={adtable.id}>
+              <td>{adtable.name}</td>
               <td>
-                <Link to={`/Advertisings/${ad.id}`}>Edit</Link>
-                <Link to={`/Advertisings`} onClick={() => handleClick(ad.id)}>
+                <Link to={`/adtables/${adtable.id}`}>Edit</Link>
+                <Link to={`/adtables`} onClick={() => handleClick(adtables.id)}>
                   Remove
                 </Link>
               </td>
@@ -66,4 +69,4 @@ const AdvertisingList = () => {
   );
 };
 
-export default AdvertisingList;
+export default AdTableList;

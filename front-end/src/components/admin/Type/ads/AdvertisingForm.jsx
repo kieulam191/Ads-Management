@@ -1,10 +1,10 @@
 import React, { useEffect, useContext } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { useFormik } from "formik";
-import axios from "../../../services/api";
-import { AppContext } from "../../../context/AppContext";
+import axios from "../../../../services/api";
+import { AppContext } from "../../../../context/AppContext";
 
-const ReportForm = () => {
+const AdvertisingForm = () => {
   const { id } = useParams();
   const history = useHistory();
   const { state, dispatch } = useContext(AppContext);
@@ -24,15 +24,15 @@ const ReportForm = () => {
     },
     onSubmit: async (values) => {
       if (id) {
-        await axios.patch(`/reports/types/${id}`, values);
+        await axios.patch(`/ads/types/${id}`, values);
       } else {
-        await axios.post("/reports/types", values);
+        await axios.post("/ads/types", values);
       }
 
-      const response = await axios.get("/reports/types");
-      dispatch({ type: "SET_REPORT_TYPES", payload: response.data.data });
+      const response = await axios.get("/ads/types");
+      dispatch({ type: "SET_AD_TYPES", payload: response.data.data });
 
-      history.push("/reports");
+      history.push("/Advertisings");
     },
   });
 
@@ -49,7 +49,7 @@ const ReportForm = () => {
 
   return (
     <div>
-      <h2>{id ? "Edit" : "Add"} report types</h2>
+      <h2>{id ? "Edit" : "Add"} Ad types</h2>
       <form onSubmit={formik.handleSubmit}>
         <label>
           Name:
@@ -64,10 +64,10 @@ const ReportForm = () => {
             <div>{formik.errors.name}</div>
           ) : null}
         </label>
-        <button type="submit">{id ? "Update" : "Add"} report type</button>
+        <button type="submit">{id ? "Update" : "Add"} Ad type</button>
       </form>
     </div>
   );
 };
 
-export default ReportForm;
+export default AdvertisingForm;

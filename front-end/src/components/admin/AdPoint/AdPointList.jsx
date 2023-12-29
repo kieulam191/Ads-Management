@@ -1,15 +1,15 @@
-import React, { useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
-import axios from '../../services/api';
-import { AppContext } from '../../context/AppContext';
+import React, { useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
+import axios from "../../../services/api";
+import { AppContext } from "../../../context/AppContext";
 
 const AdPointList = () => {
   const { state, dispatch } = useContext(AppContext);
 
   useEffect(() => {
     const fetchAdPoints = async () => {
-      const response = await axios.get('/adpoints');
-      dispatch({ type: 'SET_AD_POINTS', payload: response.data });
+      const response = await axios.get("/adpoints");
+      dispatch({ type: "SET_AD_POINTS", payload: response.data });
     };
 
     fetchAdPoints();
@@ -37,7 +37,7 @@ const AdPointList = () => {
               <td>{adPoint.location_id}</td>
               <td>{adPoint.board_type}</td>
               <td>{adPoint.size}</td>
-              <td>{adPoint.is_delete ? 'Yes' : 'No'}</td>
+              <td>{adPoint.is_delete ? "Yes" : "No"}</td>
               <td>
                 <Link to={`/adpoints/${adPoint.id}`}>Edit</Link>
               </td>

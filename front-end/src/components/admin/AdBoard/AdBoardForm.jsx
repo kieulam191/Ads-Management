@@ -1,8 +1,8 @@
-import React, { useEffect, useContext } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
-import { useFormik } from 'formik';
-import axios from '../../services/api';
-import { AppContext } from '../../context/AppContext';
+import React, { useEffect, useContext } from "react";
+import { useParams, useHistory } from "react-router-dom";
+import { useFormik } from "formik";
+import axios from "../../../services/api";
+import { AppContext } from "../../../context/AppContext";
 
 const AdBoardForm = () => {
   const { id } = useParams();
@@ -11,30 +11,30 @@ const AdBoardForm = () => {
 
   const formik = useFormik({
     initialValues: {
-      location_id: '',
-      address: '',
-      area: '',
-      location_type: '',
-      advertising_type: '',
-      image_url: '',
+      location_id: "",
+      address: "",
+      area: "",
+      location_type: "",
+      advertising_type: "",
+      image_url: "",
     },
     validate: (values) => {
       const errors = {};
 
       if (!values.address) {
-        errors.address = 'Required';
+        errors.address = "Required";
       }
 
       if (!values.area) {
-        errors.area = 'Required';
+        errors.area = "Required";
       }
 
       if (!values.location_type) {
-        errors.location_type = 'Required';
+        errors.location_type = "Required";
       }
 
       if (!values.advertising_type) {
-        errors.advertising_type = 'Required';
+        errors.advertising_type = "Required";
       }
 
       return errors;
@@ -43,13 +43,13 @@ const AdBoardForm = () => {
       if (id) {
         await axios.put(`/adboards/${id}`, values);
       } else {
-        await axios.post('/adboards', values);
+        await axios.post("/adboards", values);
       }
 
-      const response = await axios.get('/adboards');
-      dispatch({ type: 'SET_AD_BOARDS', payload: response.data });
+      const response = await axios.get("/adboards");
+      dispatch({ type: "SET_AD_BOARDS", payload: response.data });
 
-      history.push('/adboards');
+      history.push("/adboards");
     },
   });
 
@@ -66,9 +66,9 @@ const AdBoardForm = () => {
 
   return (
     <div>
-      <h2>{id ? 'Edit' : 'Add'} Ad Board</h2>
+      <h2>{id ? "Edit" : "Add"} Ad Board</h2>
       <form onSubmit={formik.handleSubmit}>
-      <label>
+        <label>
           Address:
           <input
             type="text"
@@ -137,7 +137,7 @@ const AdBoardForm = () => {
             <div>{formik.errors.image_url}</div>
           ) : null}
         </label>
-        <button type="submit">{id ? 'Update' : 'Add'} Ad Board</button>
+        <button type="submit">{id ? "Update" : "Add"} Ad Board</button>
       </form>
     </div>
   );
