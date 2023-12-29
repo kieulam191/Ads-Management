@@ -2,8 +2,10 @@ import db from '../db/db.js'
 
 const TABLE = 'users';
 
-export function findAll(){
-    return db(TABLE);
+export async function  findAll(){
+    return await db(TABLE)
+    .where("is_delete", "<>", true)
+    .select("user_id", "username", "fullname", "birthday", "email", "phone_number");
 }
 
 export async function findByEmail(email) {
