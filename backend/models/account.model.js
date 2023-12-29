@@ -5,7 +5,7 @@ const TABLE = 'users';
 export async function  findAll(){
     return await db(TABLE)
     .where("is_delete", "<>", true)
-    .select("user_id", "username", "fullname", "birthday", "email", "phone_number");
+    .select("user_id", "username", "fullname", "birthday", "email", "phone_number", "role_type");
 }
 
 export async function findByEmail(email) {
