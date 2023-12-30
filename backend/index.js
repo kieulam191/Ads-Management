@@ -12,6 +12,7 @@ import authRoutes from "./routes/auth.route.js";
 import provinceRouter from './routes/province.route.js';
 import dictrictRouter from './routes/district.route.js';
 import wardRouter from './routes/ward.route.js'
+import advertisinglocationsRouter from './routes/advertisinglocations.route.js'
 const app = express()
 const PORT = 3000
 app.use(express.json())
@@ -30,5 +31,6 @@ app.use("/auth", authRoutes);
 app.use('/provinces',provinceRouter);
 app.use('/dictricts',dictrictRouter);
 app.use('/wards',wardRouter);
+app.use('/advertisinglocations',advertisinglocationsRouter);
 app.listen(PORT, () => console.log(`app listening at http://localhost:${PORT}`))
 
