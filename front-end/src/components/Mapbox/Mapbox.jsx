@@ -42,7 +42,7 @@ const Mapbox = () => {
     });
 
     return (
-        <div>
+        <div className='map-box'>
             <div className="sidebar">
                 Kinh độ: {lng} | Vĩ độ: {lat} | Zoom: {zoom}
             </div>

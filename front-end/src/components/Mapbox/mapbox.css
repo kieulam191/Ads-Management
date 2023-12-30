@@ -1,5 +1,9 @@
-.container{
+.map-box{
     height: 100vh;
+}
+
+.container{
+   height: 100%; 
 }
 
 .sidebar {
@@ -9,8 +13,8 @@
     font-family: monospace;
     z-index: 1;
     position: absolute;
-    top: 0;
-    left: 0;
+    bottom: 0;
+    left: 75%;
     margin: 12px;
     border-radius: 4px;
 }

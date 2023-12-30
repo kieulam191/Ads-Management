@@ -1,10 +1,10 @@
-import Mapbox from './components/Mapbox/Mapbox.jsx'
+import SideBars from './components/SideBar/SideBar.jsx'
 
 function App() {
   
   return (
     <>
-      <Mapbox />
+      <SideBars />
     </>
   )
 }
