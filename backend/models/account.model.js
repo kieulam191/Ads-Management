@@ -6,6 +6,25 @@ export function findAll(){
     return db(TABLE);
 }
 
+export async function insertCodeForResetpassword(id, code) {
+   return await db(TABLE).where({user_id: id}).update({email_verification_code: code});
+}
+
+export async function findUserId(email_verification_code) {
+  const user =  await db(TABLE)
+  .where({email_verification_code: email_verification_code})
+  .select("user_id");
+
+   if (user.length === 0) {
+        return null
+    }
+    return user[0];
+}
+
+export async function removeEmailVerifyCode(id) {
+    return await db(TABLE).where({user_id: id}).update({email_verification_code: null});
+}
+
 export async function findByEmail(email) {
     const user = await db(TABLE).where({ username: email});
     if (user.length === 0) {

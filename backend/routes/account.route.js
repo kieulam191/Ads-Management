@@ -13,7 +13,7 @@ import * as hashUtil from "../utils/hashUtil.js"
 
 
 const router = express.Router();
-const OTP_MIN_LIMIX = 3;
+const OTP_MIN_LIMIX = 1;
 let  localStorage;
 
 router.post('/', accountMdw.checkAcccountValid, accountMdw.checkAccountExists, async (req, res) => {
@@ -93,6 +93,7 @@ router.post('/forgot-password', accountMdw.checkEmailValid, async (req, res) => 
 
     ts.start();
     setTimeout(() => {
+        ts.stop()
         localStorage.removeItem(email);
     }, OTP_MIN_LIMIX * 60 * 1000)
 
@@ -109,14 +110,9 @@ router.post('/verify-otp', accountMdw.checkOTPValid, async (req, res) => {
     const min_receive = +ts.getMinute();
 
     if(!ts.isRunning()) {
-        return res.status(410).end();
-    }
-
-    if(min_receive > OTP_MIN_LIMIX - 1) {
-        ts.stop();
-        return res.status(403).json({
-            msg: "OTP code expire"
-        })
+        return res.status(410).json(
+            {msg: "OTP code is no longer available."}
+        );
     }
 
     const result = await hashUtil.compare(otp_receive, localStorage.getItem(email));
@@ -127,19 +123,38 @@ router.post('/verify-otp', accountMdw.checkOTPValid, async (req, res) => {
         })
     }
 
+    ts.stop();
     const user = await accountModel.findByEmail(email);
+    const gen_code = generator.generate({
+        length: 8,
+        uppercase: true,    
+        lowercase: true,
+        numbers: true,
+    })
+    await accountModel.insertCodeForResetpassword(user.user_id, gen_code)
     return res.status(200).json({
-        user_id: user.user_id, 
+        code: gen_code,
         msg: "OTP code successfully"
     })
 })
 
-router.patch('/:id/reset-password', accountMdw.checkPasswordValid, async (req, res) => {
+router.patch('/reset-password/:reset_code', accountMdw.checkPasswordValid, async (req, res) => {
     const { new_password } = req.body;
-    const id = +req.params.id || 0;
+    const code = req.params.reset_code;
+    
+    
+    const result = await accountModel.findUserId(code);
 
+    if(result === null) {
+        return res.status(404).json({
+            msg: 'access invalid'
+        })
+    }
+    const id = +result.user_id || 0;
     const pass_hash = await hashUtil.hash(new_password);
     const data = await accountModel.resetPassword(id, pass_hash);
+    
+    await accountModel.removeEmailVerifyCode(id);
 
     if(data === null) {
         return res.status(200).json({
