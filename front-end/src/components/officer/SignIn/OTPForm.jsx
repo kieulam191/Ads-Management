@@ -12,7 +12,7 @@ const OTPForm = () => {
   const location = useLocation();
   const { state, dispatch } = useContext(AppContext);
 
-  const OTP_CODE_FAKE = "123456";
+  const OTP_CODE_LEN = 6;
 
   const formik = useFormik({
     initialValues: {
@@ -31,6 +31,11 @@ const OTPForm = () => {
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: async (values) => {
+      //Xử lý nếu mã bắt đầu = 0
+      for (var i = values.otp.length; i < OTP_CODE_LEN; ++i) {
+        values.otp = "0" + values.otp;
+      }
+
       await axios
         .post("/accounts/verify-otp", values)
         .then((res) => {
