@@ -16,6 +16,11 @@ import { AppProvider } from "./context/AppContext";
 
 import "./App.css";
 import ResidentSideBar from "./components/resident/sidebar/SideBar";
+import SignInForm from "./components/officer/SignIn/SignInForm";
+import SignUpForm from "./components/officer/SignUp/SignUpForm";
+import ForgotPassForm from "./components/officer/SignIn/ForgotPasswordForm";
+import OTPForm from "./components/officer/SignIn/OTPForm";
+import ResetPassowordForm from "./components/officer/SignIn/ResetPasswordForm";
 
 function App() {
   return (
@@ -31,6 +36,19 @@ function App() {
               component={AdboardListLocation}
             />
             <Route path="/reports" exact component={ReportForm} />
+            <Route path="/officers/signup" exact component={SignUpForm} />
+            <Route path="/officers/signin" exact component={SignInForm} />
+            <Route
+              path="/officers/forgot-password"
+              exact
+              component={ForgotPassForm}
+            />
+            <Route path="/officers/auth/OTP" exact component={OTPForm} />
+            <Route
+              path="/officers/resetpassword"
+              exact
+              component={ResetPassowordForm}
+            />
           </div>
           {/* <div className="content">
             <Switch>

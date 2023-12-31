@@ -1,5 +1,7 @@
 import React, { useContext, useRef } from "react";
 import { AppContext } from "../../../context/AppContext";
+import SignInButton from "../../officer/SignIn/SingInButton";
+import SignUpButton from "../../officer/SignUp/SignUpButton";
 const ResidentSideBar = () => {
   const { state, dispatch } = useContext(AppContext);
   const checkboxRef = useRef(null);
@@ -26,7 +28,10 @@ const ResidentSideBar = () => {
   return (
     <div className="sidebar">
       <h2>Netizen Panel</h2>
-
+      <div>
+        <SignInButton />
+        <SignUpButton />
+      </div>
       <div className="row">
         <input
           type="checkbox"
