@@ -3,6 +3,8 @@ import { useParams, useHistory, Link, useLocation } from "react-router-dom";
 import { useFormik } from "formik";
 import axios from "../../../services/api";
 import { AppContext } from "../../../context/AppContext";
+import "../message.css";
+import "../ButtonForm.css";
 
 const OTPForm = () => {
   const { id } = useParams();
@@ -29,16 +31,19 @@ const OTPForm = () => {
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: async (values) => {
-      await axios.post("/accounts/verify-otp", values).then((res) => {
-        if (res.status === 200) {
-          history.replace({
-            pathname: "/officers/resetpassword",
-            state: { id: res.data.user_id },
-          });
-        } else {
-          formik.errors.OTP_CODE = "error";
-        }
-      });
+      await axios
+        .post("/accounts/verify-otp", values)
+        .then((res) => {
+          if (res.status === 200) {
+            history.replace({
+              pathname: "/officers/resetpassword",
+              state: { code: res.data.code },
+            });
+          }
+        })
+        .catch((err) => {
+          formik.errors.otp = err.response.data.msg;
+        });
     },
   });
 
@@ -48,7 +53,6 @@ const OTPForm = () => {
 
   return (
     <div>
-      <h2>{id ? "Edit" : "Add"} Ad Board</h2>
       <form onSubmit={formik.handleSubmit}>
         <label>
           OTP CODE
@@ -60,11 +64,12 @@ const OTPForm = () => {
             value={formik.values.otp}
           />
           {formik.touched.otp && formik.errors.otp ? (
-            <div>{formik.errors.otp}</div>
+            <div className="error">{formik.errors.otp}</div>
           ) : null}
         </label>
-
-        <button type="submit">reset</button>
+        <div className="btn">
+          <button type="submit">reset</button>
+        </div>
       </form>
     </div>
   );

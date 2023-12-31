@@ -3,6 +3,8 @@ import { useParams, useHistory, Link, useLocation } from "react-router-dom";
 import { useFormik } from "formik";
 import axios from "../../../services/api";
 import { AppContext } from "../../../context/AppContext";
+import "../message.css";
+import "../ButtonForm.css";
 
 const ResetPassowordForm = () => {
   const { id } = useParams();
@@ -31,14 +33,16 @@ const ResetPassowordForm = () => {
     onSubmit: async (values) => {
       const { re_password, ...rest } = values;
       axios
-        .patch(`/accounts/${location.state.id}/reset-password`, rest)
-        .then((res) => console.log(res));
+        .patch(`/accounts/reset-password/${location.state.code}`, rest)
+        .then((res) => {
+          history.replace("/officers/signin");
+        });
     },
   });
 
   return (
     <div>
-      <h2>{id ? "Edit" : "Add"} Ad Board</h2>
+      <h2>Change password</h2>
       <form onSubmit={formik.handleSubmit}>
         <label>
           New Password
@@ -50,7 +54,7 @@ const ResetPassowordForm = () => {
             value={formik.values.new_password}
           />
           {formik.touched.new_password && formik.errors.new_password ? (
-            <div>{formik.errors.new_password}</div>
+            <div className="error">{formik.errors.new_password}</div>
           ) : null}
         </label>
 
@@ -64,11 +68,13 @@ const ResetPassowordForm = () => {
             value={formik.values.re_password}
           />
           {formik.touched.re_password && formik.errors.re_password ? (
-            <div>{formik.errors.re_password}</div>
+            <div className="error">{formik.errors.re_password}</div>
           ) : null}
         </label>
 
-        <button type="submit">Send OTP code</button>
+        <div className="btn">
+          <button type="submit">Change password</button>
+        </div>
       </form>
     </div>
   );

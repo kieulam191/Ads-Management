@@ -3,6 +3,8 @@ import { useParams, useHistory, Link } from "react-router-dom";
 import { useFormik } from "formik";
 import axios from "../../../services/api";
 import { AppContext } from "../../../context/AppContext";
+import "../message.css";
+import "../ButtonForm.css";
 
 const ForgotPassForm = () => {
   const { id } = useParams();
@@ -40,7 +42,7 @@ const ForgotPassForm = () => {
 
   return (
     <div>
-      <h2>{id ? "Edit" : "Add"} Ad Board</h2>
+      <h2>Forgot Password</h2>
       <form onSubmit={formik.handleSubmit}>
         <label>
           Email
@@ -52,11 +54,13 @@ const ForgotPassForm = () => {
             value={formik.values.email}
           />
           {formik.touched.email && formik.errors.email ? (
-            <div>{formik.errors.email}</div>
+            <div className="error">{formik.errors.email}</div>
           ) : null}
         </label>
 
-        <button type="submit">Send OTP code</button>
+        <div className="btn">
+          <button type="submit">Send OTP code</button>
+        </div>
       </form>
     </div>
   );

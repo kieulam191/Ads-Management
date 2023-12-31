@@ -1,8 +1,10 @@
 import React, { useEffect, useContext } from "react";
 import { useParams, useHistory, Link } from "react-router-dom";
-import { useFormik } from "formik";
+import { useFormik, ErrorMessage } from "formik";
 import axios from "../../../services/api";
 import { AppContext } from "../../../context/AppContext";
+import "../message.css";
+import "../ButtonForm.css";
 
 const SignInForm = () => {
   const { id } = useParams();
@@ -30,44 +32,19 @@ const SignInForm = () => {
     onSubmit: async (values) => {
       await axios
         .post("/auth/signin", values)
-        .then((response) => console.log(response));
-
-      // const response = await axios.get("/adboards");
-      // dispatch({ type: "SET_AD_BOARDS", payload: response.data });
-
-      //history.push("/adboards");
+        .then((res) => {
+          console.log(res);
+          //routing to page by role
+        })
+        .catch((err) => {
+          formik.errors.username = err.response.data.message;
+        });
     },
   });
 
-  // useEffect(() => {
-  //   const fetchAdBoard = async () => {
-  //     if (id) {
-  //       const response = await axios.get(`/adboards/${id}`);
-  //       formik.setValues(response.data);
-  //     }
-  //   };
-
-  //   fetchAdBoard();
-  // }, [id, formik]);
-
   return (
     <div>
-      <h2>{id ? "Edit" : "Add"} Ad Board</h2>
       <form onSubmit={formik.handleSubmit}>
-        {/* <label>
-          Email
-          <input
-            type="email"
-            name="email"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.eamil}
-          />
-          {formik.touched.email && formik.errors.email ? (
-            <div>{formik.errors.eamil}</div>
-          ) : null}
-        </label> */}
-
         <label>
           Username
           <input
@@ -78,12 +55,12 @@ const SignInForm = () => {
             value={formik.values.username}
           />
           {formik.touched.username && formik.errors.username ? (
-            <div>{formik.errors.username}</div>
+            <div className="error">{formik.errors.username}</div>
           ) : null}
         </label>
 
         <label>
-          PassWord
+          Password
           <input
             type="password"
             name="password"
@@ -92,14 +69,16 @@ const SignInForm = () => {
             value={formik.values.password}
           />
           {formik.touched.password && formik.errors.password ? (
-            <div>{formik.errors.password}</div>
+            <div className="error">{formik.errors.password}</div>
           ) : null}
         </label>
-
-        <Link to="/officers/forgot-password">Forgot Password?</Link>
+        <div className="forgot-password-link">
+          <Link to="/officers/forgot-password">Forgot Password?</Link>
+        </div>
         <br />
-
-        <button type="submit">{id ? "Update" : "Add"} Ad Board</button>
+        <div className="btn">
+          <button type="submit">Sign In</button>
+        </div>
       </form>
     </div>
   );
