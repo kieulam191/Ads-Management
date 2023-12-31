@@ -1,14 +1,3 @@
 .container{
     height: 100vh;
 }
-.mapboxgl-popup {
-    position: fixed; top: 0; bottom: 0; 
-    background-color: white;
-    width: 500px;
-    height: 100px;
-    font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-}
-
-#map {
-    position: absolute; top: 0; bottom: 0; width: 100%; 
-}
