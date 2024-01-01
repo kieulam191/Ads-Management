@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import { useParams, useHistory, Link, useLocation } from "react-router-dom";
+import { useParams, useNavigate, Link, useLocation } from "react-router-dom";
 import { useFormik } from "formik";
 import axios from "../../../services/api";
 import { AppContext } from "../../../context/AppContext";
@@ -8,7 +8,7 @@ import "../ButtonForm.css";
 
 const OTPForm = () => {
   const { id } = useParams();
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const { state, dispatch } = useContext(AppContext);
 
@@ -40,7 +40,7 @@ const OTPForm = () => {
         .post("/accounts/verify-otp", values)
         .then((res) => {
           if (res.status === 200) {
-            history.replace({
+            navigate.replace({
               pathname: "/officers/resetpassword",
               state: { code: res.data.code },
             });

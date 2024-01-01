@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import { useParams, useHistory, Link, useLocation } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useFormik } from "formik";
 import axios from "../../../services/api";
 import { AppContext } from "../../../context/AppContext";
@@ -8,7 +8,7 @@ import "../ButtonForm.css";
 
 const ResetPassowordForm = () => {
   const { id } = useParams();
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const { state, dispatch } = useContext(AppContext);
 
@@ -35,7 +35,7 @@ const ResetPassowordForm = () => {
       axios
         .patch(`/accounts/reset-password/${location.state.code}`, rest)
         .then((res) => {
-          history.replace("/officers/signin");
+          navigate.replace("/officers/signin");
         });
     },
   });

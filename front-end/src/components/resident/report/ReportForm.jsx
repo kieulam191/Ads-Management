@@ -1,12 +1,12 @@
 import React, { useEffect, useContext } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import axios from "../../../services/api";
 import { AppContext } from "../../../context/AppContext";
 
 const AdBoardForm = () => {
   const { id } = useParams();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { state, dispatch } = useContext(AppContext);
 
   const formik = useFormik({
@@ -44,14 +44,6 @@ const AdBoardForm = () => {
     },
     onSubmit: async (values) => {
       console.log(values);
-      //   if (id) {
-      //     await axios.put(`/adboards/${id}`, values);
-      //   } else {
-      //     await axios.post("/adboards", values);
-      //   }
-      //   const response = await axios.get("/adboards");
-      //   dispatch({ type: "SET_AD_BOARDS", payload: response.data });
-      //   history.push("/adboards");
     },
   });
 

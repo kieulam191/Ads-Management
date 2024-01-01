@@ -1,12 +1,12 @@
 import React, { useEffect, useContext } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import axios from '../../services/api';
 import { AppContext } from '../../context/AppContext';
 
 const DistrictForm = () => {
   const { id } = useParams();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { state, dispatch } = useContext(AppContext);
 
   const formik = useFormik({
@@ -58,7 +58,7 @@ const DistrictForm = () => {
       const response = await axios.get('/districts');
       dispatch({ type: 'SET_DISTRICTS', payload: response.data });
 
-      history.push('/districts');
+      navigate('/districts');
     },
   });
 

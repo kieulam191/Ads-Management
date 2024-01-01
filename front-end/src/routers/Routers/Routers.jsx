@@ -4,13 +4,14 @@ import {
 
 import App from "../../App";
 import ErrorPage from '../Error/ErrorPage'
-import LoginPage from '../../pages/LoginPage'
+import LoginForm from "../../pages/LoginPage/LoginForm";
 import SignInForm from "../../components/officer/SignIn/SignInForm";
 import SignUpForm from "../../components/officer/SignUp/SignUpForm";
 import ForgotPassForm from "../../components/officer/SignIn/ForgotPasswordForm";
 import ResetPassowordForm from "../../components/officer/SignIn/ResetPasswordForm";
 import OTPForm from "../../components/officer/SignIn/OTPForm";
 import AdBoardListLocation from "../../components/resident/AdBoardLocation";
+import ReportForm from '../../components/resident/report/ReportForm'
 
 const router = createBrowserRouter([
     {
@@ -20,7 +21,7 @@ const router = createBrowserRouter([
     },
     {
       path: "/login",
-      element: <LoginPage />,
+      element: <LoginForm />,
       errorElement: <ErrorPage />,
     },
     {

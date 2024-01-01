@@ -1,13 +1,12 @@
 import { useRef, useEffect, useState, useContext } from "react";
-import { useHistory } from "react-router-dom";
-//import ReactMapboxGl from "react-mapbox-gl";
+import { useNavigate } from "react-router-dom";
 import { token } from "../../constains/token";
 import mapboxgl from "mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
-import "./mapbox.css";
 import { AppContext } from "../../context/AppContext";
 import Report from "../resident/report/ReportList";
 import axios from "axios";
 
+import "./mapbox.css";
 mapboxgl.accessToken = token;
 
 const Mapbox = () => {
@@ -30,7 +29,7 @@ const Mapbox = () => {
     [106.6817, 10.7632],
   ]);
 
-  const navigate = useHistory();
+  const navigate = useNavigate();
   let flag = false;
   let popup;
 
@@ -173,27 +172,7 @@ const Mapbox = () => {
       // location of the feature, with description HTML from its properties.
       map.current.on("click", "places", (e) => {
         console.log("da click marker");
-
-        // Copy coordinates array.
-        // const coordinates = e.features[0].geometry.coordinates.slice();
-        // const description = e.features[0].properties.description;
-        // const loc_id = e.features[0].properties.loc_id;
-
-        // // Ensure that if the map is zoomed out such that multiple
-        // // copies of the feature are visible, the popup appears
-        // // over the copy being pointed to.
-        // while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-        //   coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-        // }
-        // new mapboxgl.Popup({
-        //   className: "mapboxgl-popup",
-        //   offset: [0, -10],
-        //   closeButton: false,
-        // })
-        //   .setLngLat(coordinates)
-        //   .setHTML(description)
-        //   .addTo(map.current);
-        navigate.push("/adboardlistloc");
+        navigate("/adboard-list-location");
       });
 
       map.current.on("click", (e) => {
@@ -218,7 +197,7 @@ const Mapbox = () => {
               document
                 .getElementById("report")
                 .addEventListener("click", () => {
-                  navigate.push("/reports");
+                  navigate("/reports");
                 });
             });
         }

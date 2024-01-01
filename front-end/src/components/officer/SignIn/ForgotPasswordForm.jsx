@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import { useParams, useHistory, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import axios from "../../../services/api";
 import { AppContext } from "../../../context/AppContext";
@@ -8,7 +8,7 @@ import "../ButtonForm.css";
 
 const ForgotPassForm = () => {
   const { id } = useParams();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { state, dispatch } = useContext(AppContext);
 
   const formik = useFormik({
@@ -32,7 +32,7 @@ const ForgotPassForm = () => {
       // });
       console.log(values);
       await axios.post("accounts/forgot-password", values).then((res) => {
-        history.push({
+        navigate({
           pathname: "/officers/auth/OTP",
           state: { email: values.email },
         });

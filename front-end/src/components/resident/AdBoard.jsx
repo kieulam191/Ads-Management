@@ -1,9 +1,9 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./AdBoard.css";
 
 const AdBoardInfo = () => {
-  const navigte = useHistory();
+  const navigate = useNavigate();
 
   const handleClick = () => {
     console.log("da click");
