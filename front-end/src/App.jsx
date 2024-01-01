@@ -1,12 +1,17 @@
-import SideBars from './components/SideBar/SideBar.jsx'
+import React from "react";
+
+import Mapbox from "./components/Mapbox/Mapbox";
+import ResidentSideBar from "./components/resident/sidebar/SideBar";
+
+import "./App.css";
 
 function App() {
-  
   return (
     <>
-      <SideBars />
+    <ResidentSideBar />
+    {/* <SideBars /> */}
     </>
   )
 }
 
-export default App
+export default App;

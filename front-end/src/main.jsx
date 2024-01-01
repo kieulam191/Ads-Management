@@ -1,35 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import 'mapbox-gl/dist/mapbox-gl.css';
+import {RouterProvider} from "react-router-dom";
 
-import App from './App.jsx'
-import LoginPage from './pages/LoginPage/LoginPage.jsx';
-import ErrorPage from './routers/Error/ErrorPage.jsx';
-
-
-
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { AppProvider } from './context/AppContext';
+import router from './routers/Routers/Routers';
 
 import './index.css'
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/login",
-    element: <LoginPage />,
-    errorElement: <ErrorPage />,
-  },
-]);
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AppProvider>
+      <RouterProvider router={router} />
+    </AppProvider>
   </React.StrictMode>,
 )

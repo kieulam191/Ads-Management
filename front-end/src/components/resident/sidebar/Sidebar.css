@@ -1,0 +1,18 @@
+.column-left {
+    float: left;
+    width: 50%;
+    align-content: start;
+}
+
+.column-right {
+    float: left;
+    width: 50%;
+}
+
+.lable-content {
+    text-align: center;
+}
+
+.row-content {
+    text-justify: left;
+}
