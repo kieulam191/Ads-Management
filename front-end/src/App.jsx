@@ -1,15 +1,16 @@
 import React from "react";
 
 import Mapbox from "./components/Mapbox/Mapbox";
-import ResidentSideBar from "./components/resident/sidebar/SideBar";
-import SideBars from './components/SideBar/SideBar'
+import HomePage from './pages/CB_PHUONG/CB_PHUONG'
+import SignIn from './components/officer/SignIn/SignInForm'
+import LoginForm from "./pages/LoginPage/LoginForm";
 
 import "./App.css";
 
 function App() {
   return (
     <>
-      <SideBars />
+      <HomePage />
     </>
   )
 }

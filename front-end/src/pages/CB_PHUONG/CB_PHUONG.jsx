@@ -1,10 +1,10 @@
 import {React, useState} from 'react'
 import {  Layout, Menu } from 'antd';
 
-import Mapbox from '../Mapbox/Mapbox';
-import AdsManage from '../../pages/AdsManage/AdsManage';
-import ReportsManage from '../../pages/ReportsManage/ReportsManage';
-import EditAds from '../../pages/EditAds/EditAds';
+import Mapbox from '../../components/Mapbox/Mapbox';
+import AdsManage from '../AdsManage/AdsManage';
+import ReportsManage from '../ReportsManage/ReportsManage';
+import EditAds from '../EditAds/EditAds';
 
 import {
   HomeOutlined,
@@ -12,7 +12,7 @@ import {
   FormOutlined,
 } from '@ant-design/icons';
 
-import './sidebar.css'
+import './phuong.css'
 
 const {  Content, Sider } = Layout;
 
@@ -20,7 +20,7 @@ function getItem(label, key, path, icon, children) {
   return {key, icon, children, label, path};
 }
 
-const SideBars = () => {
+const HomePage = () => {
     const [collapsed, setCollapsed] = useState(false);
     const [render, setRender] = useState(1);
 
@@ -29,6 +29,7 @@ const SideBars = () => {
       getItem('Quản lý QC', '2','/ads-manage', <UnorderedListOutlined />),
       getItem('Cập nhật QC', '3','/update-ads', <FormOutlined />),
       getItem('Quản lý RP', '4','/reports-manage', <UnorderedListOutlined />),
+      //getItem('Đăng xuất', '5','/logout', <UnorderedListOutlined />),
     ];
 
     const components = {
@@ -36,7 +37,6 @@ const SideBars = () => {
       2: <AdsManage />,
       3: <EditAds />,
       4: <ReportsManage />,
-
     };
 
     // const handleMenuClick = (item) => {
@@ -63,4 +63,4 @@ const SideBars = () => {
   )
 }
 
-export default SideBars
+export default HomePage

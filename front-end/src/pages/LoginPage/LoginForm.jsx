@@ -1,55 +1,59 @@
 import {React, useState} from 'react';
 import { useNavigate } from 'react-router';
+import { useFormik } from "formik";
 import axios from 'axios';
+
 import './login.css'
 
 const LoginForm = () => {
   const goRouter = useNavigate();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'username') {
-      setUsername(value);
-    } else if (name === 'password') {
-      setPassword(value);
-    }
-  };
-  const handleLogin = () => {
-    if(username && password){
-        const user = {username: username, password: password};
-        let dataLogin = JSON.stringify(user);
-        let config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            url: 'http://localhost:8080/',
-            headers:{
-              'Content-Type': 'application/json'
-            },
-            data: dataLogin
-        };
-        axios.request(config)
-        .then(res => {
-        console.log(JSON.stringify(res.data))
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+    validate: (values) => {
+      const errors = {};
+
+      if (!values.username) {
+        errors.username = "Required";
+      }
+
+      if (!values.password) {
+        errors.password = "Required";
+      }
+
+      return errors;
+    },
+    onSubmit: async (values) => {
+      await axios
+        .post("https://ads-management-backend.onrender.com/auth/signin", values)
+        .then((res) => {
+          console.log(res.data);
+          const accessToken = res.data.accessToken;
+          sessionStorage.setItem('access_token', accessToken);
+          goRouter('/')
         })
+        .catch((err) => {
+          formik.errors.username = err.response.data.message;
+        });
+    },
+  });
 
-        goRouter('/');
-    }
-    
-  };
 
   return (
     <div className='login'>
       <h2>Đăng nhập</h2>
-      <form>
+      <form onSubmit={formik.handleSubmit}>
         <label>
           <span>Tên đăng nhập:</span>
           <input
             type="text"
             name="username"
-            value={username}
-            onChange={handleInputChange}
+            value={formik.values.username}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             required
           />
         </label>
@@ -58,12 +62,18 @@ const LoginForm = () => {
           <input
             type="password"
             name="password"
-            value={password}
-            onChange={handleInputChange}
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             required
           />
         </label>
-        <button className='btn' type="button" onClick={handleLogin}>
+
+        {formik.touched.password && formik.errors.password ? (
+            <div className="error">{formik.errors.password}</div>
+          ) : null}
+
+        <button className='btn' type="submit">
           Đăng nhập
         </button>
       </form>

@@ -1,9 +1,6 @@
 .login{
-    max-width: 30%;
-    max-height: 80%;
-
-    width: 25%;
-    height: 25%;
+    width: 450px;
+    height: 250px;
 
     position: absolute;
     top: 50%;
@@ -35,7 +32,7 @@ form{
 }
 
 span{
-    font-size: 18px;
+    font-size: 16px;
 }
 
 input{
