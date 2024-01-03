@@ -107,7 +107,13 @@ export async function  findById(id){
         .on("advertising_methods.id","advertisinglocations.advertising_method")
         .onVal("advertising_methods.is_delete",false)   
     })
-    .where("id",id)
+    .leftJoin("reportviolations",function ()   //báo cáo vi phạm
+    {
+        this
+        .on("reportviolations.location_id","advertisinglocations.location_id")
+        .onVal("reportviolations.is_delete",false)   
+    })
+    .where("advertisinglocations.location_id",id)
     .andWhere("advertisinglocations.is_delete", false)
     .first()
     .select({location_id : "advertisinglocations.location_id",
