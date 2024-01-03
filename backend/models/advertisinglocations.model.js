@@ -20,6 +20,12 @@ export async function  findAll(wards,districts_fullname){
         .on("advertising_methods.id","advertisinglocations.advertising_method")
         .onVal("advertising_methods.is_delete",false)   
     })
+    .leftJoin("reportviolations",function ()   //Hình thức quảng cáo 
+    {
+        this
+        .on("reportviolations.location_id","advertisinglocations.location_id")
+        .onVal("reportviolations.is_delete",false)   
+    })
     //"adstabletype.id", "=" , "advertisinglocations.advertising_type")
     //.select();
     // return await db(TABLE)
@@ -32,17 +38,17 @@ export async function  findAll(wards,districts_fullname){
         // temp.andWhereLike({"districts_fullname":'%' + districts_fullname + '%',"wards_fullname" : '%' + wards[i] + '%'})
         // temp.orWhereLike("wards_fullname" , '%' + wards[i] + '%')
         //Do something
-        temp.whereLike("districts_fullname" ,'%' + districts_fullname + '%')
+        temp.whereLike("advertisinglocations.districts_fullname" ,'%' + districts_fullname + '%')
         temp.andWhere(function(){
             for (var i = 0; i < wards.length; i++) {
-                this.orWhereLike("wards_fullname",'%' + wards[i] + '%')
+                this.orWhereLike("advertisinglocations.wards_fullname",'%' + wards[i] + '%')
             }
         })
         
     }
     else if(districts_fullname)
     {
-        temp.whereLike("districts_fullname" ,'%' + districts_fullname + '%')
+        temp.whereLike("advertisinglocations.districts_fullname" ,'%' + districts_fullname + '%')
     }
     // else if(wards)
     // {
@@ -56,21 +62,22 @@ export async function  findAll(wards,districts_fullname){
     // }
     temp.where("advertisinglocations.is_delete", false)
     
-    return await temp.select({location_id : "location_id",
-    address : "address" ,
+    return await temp.select({location_id : "advertisinglocations.location_id",
+    address : "advertisinglocations.address" ,
     adstabletype_name : "adstabletype.name",
     positiontype_name : "positiontype.name",
     advertising_methods_name : "advertising_methods.name",
-    planned:"planned",
-    lng:"lng",
-    lat:"lat",
-    wards_fullname:"wards_fullname",
-    districts_fullname:"districts_fullname",
-    provinces_fullname:"provinces_fullname",
-    is_planning:"is_planning",
-    expried:"expried",
-    width: "width" ,
-    height:"height"
+    planned:"advertisinglocations.planned",
+    lng:"advertisinglocations.lng",
+    lat:"advertisinglocations.lat",
+    wards_fullname:"advertisinglocations.wards_fullname",
+    districts_fullname:"advertisinglocations.districts_fullname",
+    provinces_fullname:"advertisinglocations.provinces_fullname",
+    is_planning:"advertisinglocations.is_planning",
+    expried:"advertisinglocations.expried",
+    width: "advertisinglocations.width" ,
+    height:"advertisinglocations.height",
+    reportviolations_id : 'reportviolations.id' 
     })
 
 }
@@ -78,7 +85,7 @@ export async function  findAll(wards,districts_fullname){
 export async function  add(data){
     return await db(TABLE).insert(data);
     // .join("adstype", "adstype.id",TABLE.)
-    //.select("location_id","address","area","planned","lng","lat","wards_fullname","districts_fullname","provinces_fullname","is_planning","image_url");;
+    //.select("id","address","area","planned","lng","lat","wards_fullname","districts_fullname","provinces_fullname","is_planning","image_url");;
 }
 
 export async function  findById(id){
@@ -100,24 +107,25 @@ export async function  findById(id){
         .on("advertising_methods.id","advertisinglocations.advertising_method")
         .onVal("advertising_methods.is_delete",false)   
     })
-    .where("location_id",id)
+    .where("id",id)
     .andWhere("advertisinglocations.is_delete", false)
     .first()
-    .select({location_id : "location_id",
-    address : "address" ,
+    .select({location_id : "advertisinglocations.location_id",
+    address : "advertisinglocations.address" ,
     adstabletype_name : "adstabletype.name",
     positiontype_name : "positiontype.name",
     advertising_methods_name : "advertising_methods.name",
-    planned:"planned",
-    lng:"lng",
-    lat:"lat",
-    wards_fullname:"wards_fullname",
-    districts_fullname:"districts_fullname",
-    provinces_fullname:"provinces_fullname",
-    is_planning:"is_planning",
-    expried:"expried",
-    width: "width" ,
-    height:"height"
+    planned:"advertisinglocations.planned",
+    lng:"advertisinglocations.lng",
+    lat:"advertisinglocations.lat",
+    wards_fullname:"advertisinglocations.wards_fullname",
+    districts_fullname:"advertisinglocations.districts_fullname",
+    provinces_fullname:"advertisinglocations.provinces_fullname",
+    is_planning:"advertisinglocations.is_planning",
+    expried:"advertisinglocations.expried",
+    width: "advertisinglocations.width" ,
+    height:"advertisinglocations.height",
+    reportviolations_id : 'reportviolations.id' 
     })
 
 }
