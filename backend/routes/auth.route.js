@@ -60,6 +60,8 @@ router.post("/signin", async (req, res) => {
             accessToken,
             refreshToken,
             message: "Logged in sucessfully",
+            role_type: user.role_type
+
         });
     } catch (err) {
         console.log(err);
