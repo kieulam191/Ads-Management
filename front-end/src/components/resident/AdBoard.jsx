@@ -1,32 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import "./AdBoard.css";
 
-const AdBoardInfo = () => {
+const AdBoardInfo = (props) => {
   const navigte = useHistory();
+  const [adDetail, setAdDetail] = useState([]);
 
   const handleClick = () => {
-    console.log("da click");
+    navigte.push({ pathname: "/reports", state: { ad: props.ad } });
   };
+
+  const getFormattedDate = (dateStr) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString();
+  };
+
+  useEffect(() => {
+    setAdDetail(props.ad);
+    console.log(adDetail);
+  });
 
   return (
     <div className="adboard">
       <div className="row">
         <div className="column-left">
-          <h2>Trụ, cụm pano</h2>
-          <p className="address">
-            Đồng khởi-Nguyễn du, Phường Bến nghé, quận 1
+          <h2>{adDetail.adstabletype_name}</h2>
+          <p className="address">{adDetail.address}</p>
+          <p>
+            Kích thước:
+            <span>
+              {adDetail.width}m x {adDetail.height}m
+            </span>
           </p>
-          <p>Kích thước: 2.5m x 10m</p>
           <p>
             Số lượng: <span>1 trụ/bảng</span>
           </p>
           <p>
-            Hình thức: <span>Cổ động chính trị</span>
+            Hình thức: <span>{adDetail.advertising_methods_name}</span>
           </p>
           <p>
-            Phận loại:{" "}
-            <span>Đất công/Công viên/Hành lang an toàn giao thông</span>
+            Phận loại: <span>{adDetail.positiontype_name}</span>
           </p>
           <button type="submit" className="button" onClick={handleClick}>
             Báo cáo vi phạm
@@ -35,7 +48,7 @@ const AdBoardInfo = () => {
         <div className="column-right">
           <h2>Chi Tiết bảng báo cáo</h2>
           <p>
-            Ngày hết hạn: <span>24/12/2024</span>
+            Ngày hết hạn: <span>{getFormattedDate(adDetail.expried)}</span>
           </p>
         </div>
       </div>

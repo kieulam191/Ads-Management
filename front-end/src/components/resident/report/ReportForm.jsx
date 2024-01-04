@@ -1,31 +1,35 @@
 import React, { useEffect, useContext } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, useLocation } from "react-router-dom";
 import { useFormik } from "formik";
 import axios from "../../../services/api";
 import { AppContext } from "../../../context/AppContext";
 
-const AdBoardForm = () => {
+const ReportForm = (props) => {
   const { id } = useParams();
   const history = useHistory();
+  const location = useLocation();
   const { state, dispatch } = useContext(AppContext);
 
   const formik = useFormik({
     initialValues: {
-      report_type: "",
-      name: "",
+      report_type_id: "",
+      fullname: "",
       email: "",
       phone_number: "",
       report_content: "",
+      lat: location.state.ad.lat,
+      lng: location.state.ad.lng,
+      location_id: location.state.ad.location_id,
     },
     validate: (values) => {
       const errors = {};
 
-      if (!values.report_type) {
-        errors.report_type = "Required";
+      if (!values.report_type_id) {
+        errors.report_type_id = "Required";
       }
 
-      if (!values.name) {
-        errors.name = "Required";
+      if (!values.fullname) {
+        errors.fullname = "Required";
       }
 
       if (!values.email) {
@@ -44,14 +48,13 @@ const AdBoardForm = () => {
     },
     onSubmit: async (values) => {
       console.log(values);
-      //   if (id) {
-      //     await axios.put(`/adboards/${id}`, values);
-      //   } else {
-      //     await axios.post("/adboards", values);
-      //   }
-      //   const response = await axios.get("/adboards");
-      //   dispatch({ type: "SET_AD_BOARDS", payload: response.data });
-      //   history.push("/adboards");
+
+      await axios
+        .post(
+          "https://ads-management-backend.onrender.com/reportviolations/add",
+          values
+        )
+        .then((res) => console.log(res));
     },
   });
 
@@ -66,17 +69,17 @@ const AdBoardForm = () => {
         <label>
           Hình Thức Báo Cáo:
           <select
-            name="report_type"
+            name="report_type_id"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.report_type}
+            value={formik.values.report_type_id}
           >
             <option value="">Chọn hình thức</option>
             <option value="1">Tố giác tội phạm</option>
             <option value="2">Đăng ký nội dung</option>
           </select>
-          {formik.touched.report_type && formik.errors.report_type ? (
-            <div>{formik.errors.report_type}</div>
+          {formik.touched.report_type_id && formik.errors.report_type_id ? (
+            <div>{formik.errors.report_type_id}</div>
           ) : null}
         </label>
 
@@ -84,13 +87,13 @@ const AdBoardForm = () => {
           Họ Tên
           <input
             type="text"
-            name="name"
+            name="fullname"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.area}
           />
-          {formik.touched.name && formik.errors.name ? (
-            <div>{formik.errors.name}</div>
+          {formik.touched.fullname && formik.errors.fullname ? (
+            <div>{formik.errors.fullname}</div>
           ) : null}
         </label>
 
@@ -141,4 +144,4 @@ const AdBoardForm = () => {
   );
 };
 
-export default AdBoardForm;
+export default ReportForm;

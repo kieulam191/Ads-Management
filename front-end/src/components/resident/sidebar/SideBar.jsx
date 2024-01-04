@@ -40,7 +40,7 @@ const ResidentSideBar = () => {
           defaultChecked={false}
           className="checkbox-input"
         />
-        <label className="lable-content"> ẩn báo cáo</label>
+        <label className="lable-content">Ẩn quy hoạch</label>
         <input
           type="checkbox"
           ref={reportcheckboxRef}
@@ -48,7 +48,7 @@ const ResidentSideBar = () => {
           defaultChecked={false}
           className="checkbox-input"
         />
-        <label className="lable-content">ẩn quy hoạch</label>
+        <label className="lable-content">Ẩn báo cáo</label>
       </div>
 
       {state.reports}

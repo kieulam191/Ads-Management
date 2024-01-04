@@ -7,6 +7,7 @@ import "./mapbox.css";
 import { AppContext } from "../../context/AppContext";
 import Report from "../resident/report/ReportList";
 import axios from "axios";
+import hostAxios from "../../services/api";
 
 mapboxgl.accessToken = token;
 
@@ -16,19 +17,8 @@ const Mapbox = () => {
   const [lng, setLng] = useState(106.6822);
   const [lat, setLat] = useState(10.7623);
   const [zoom, setZoom] = useState(17);
-  const [isAnyClicked, setIsAnyClicked] = useState(true);
+  const [adLocation, setAdLocation] = useState([]);
   const { state, dispatch } = useContext(AppContext);
-
-  const [adGeo, setAdGeo] = useState([
-    [106.6842, 10.7623],
-    [106.6817, 10.7632],
-    [106.6847, 10.7619],
-  ]);
-
-  const [report, setReport] = useState([
-    [106.6842, 10.7623],
-    [106.6817, 10.7632],
-  ]);
 
   const navigate = useHistory();
   let flag = false;
@@ -38,37 +28,92 @@ const Mapbox = () => {
     console.log("da click remove");
   };
 
-  useEffect(() => {
-    if (map.current && state.isCheckUrbaned) {
-      console.log("da thay doi souce");
-      const updatedGeoJSONData = {
+  const createGeoJson = async (locations) => {
+    const geoJson = {
+      type: "geojson",
+      data: {
         type: "FeatureCollection",
-        features: [
-          {
+        features: locations.map((loc) => {
+          return {
             type: "Feature",
             properties: {
-              loc_id: 1,
-              description:
-                "<strong>Cổ động chính trị</strong><p>Đất công viên, nguyễn du, Phường Bến Nghé, Quận 1</p><strong>Đã quy hoạch</strong>",
-              icon: "theatre",
+              loc_id: loc[0],
+              description: `<strong>${loc[1]}</strong><p>${loc[2]}</p>${
+                loc[3]
+              }<p>${loc[4] ? "Đã quy hoạch" : "Chưa quy hoạch"}</p></strong>`,
+              wards: loc[5],
+              districts: loc[6],
+              icon: `${
+                loc[7] === null ? (loc[4] ? "planed" : "plan") : "report"
+              }`,
             },
             geometry: {
               type: "Point",
-              coordinates: adGeo[0],
+              coordinates: loc[8],
             },
-          },
-        ],
-      };
-      map.current.getSource("places").setData(updatedGeoJSONData);
+          };
+        }),
+      },
+    };
+    return await geoJson;
+  };
+
+  useEffect(() => {
+    if (map.current) {
+      try {
+        const features = adLocation
+          .filter((f) => {
+            if (state.isCheckUrbaned === false) {
+              return f;
+            }
+            return f[4] === state.isCheckUrbaned;
+          })
+          .map((ad) => {
+            return {
+              type: "Feature",
+              properties: {
+                loc_id: ad[0],
+                description: `<strong>${ad[1]}</strong><p>${ad[2]}</p>${
+                  ad[3]
+                }<p>${ad[4] ? "Đã quy hoạch" : "Chưa quy hoạch"}</p></strong>`,
+                wards: ad[5],
+                districts: ad[6],
+                icon: `${
+                  ad[7] === null ? (ad[4] ? "planed" : "plan") : "report"
+                }`,
+              },
+              geometry: {
+                type: "Point",
+                coordinates: ad[8],
+              },
+            };
+          });
+
+        const updatedGeoJSONData = {
+          type: "FeatureCollection",
+          features: features,
+        };
+        map.current.getSource("places").setData(updatedGeoJSONData);
+      } catch (err) {
+        console.log("map chua khoi tao");
+      }
     }
   }, [state.isCheckUrbaned]);
 
   useEffect(() => {
-    if (map.current && state.isCheckReportHide)
-      dispatch({
-        type: "SET_REPORT_BOARDS",
-        payload: report.map((r) => <Report />),
-      });
+    if (map.current && state.isCheckReportHide) {
+      const fetchReport = async () =>
+        hostAxios.post("/reportviolations").then((res) => {
+          const reports = res.data;
+
+          dispatch({
+            type: "SET_REPORT_BOARDS",
+            payload: reports.map((report) => <Report report={report} />),
+          });
+        });
+
+      fetchReport();
+    }
   }, [state.isCheckReportHide]);
 
   useEffect(() => {
@@ -80,83 +125,53 @@ const Mapbox = () => {
       zoom: zoom,
     });
 
-    map.current.on("load", () => {
-      map.current.addSource("places", {
-        // This GeoJSON contains features that include an "icon"
-        // property. The value of the "icon" property corresponds
-        // to an image in the Mapbox Streets style's sprite.
-        type: "geojson",
-        data: {
-          type: "FeatureCollection",
-          features: [
-            {
-              type: "Feature",
-              properties: {
-                loc_id: 1,
-                description:
-                  "<strong>Cổ động chính trị</strong><p>Đất công viên, nguyễn du, Phường Bến Nghé, Quận 1</p><strong>Đã quy hoạch</strong>",
-                icon: "theatre",
-              },
-              geometry: {
-                type: "Point",
-                coordinates: adGeo[0],
-              },
-            },
-            {
-              type: "Feature",
-              properties: {
-                loc_id: 2,
-                description:
-                  "<strong>Cổ động chính trị</strong><p>Đất công viên, nguyễn du, Phường Bến Nghé, Quận 1</p><strong>Đã quy hoạch</strong>",
-                icon: "theatre",
-              },
-              geometry: {
-                type: "Point",
-                coordinates: adGeo[1],
-              },
-            },
-            {
-              type: "Feature",
-              properties: {
-                loc_id: 3,
-                description:
-                  "<strong>Cổ động chính trị</strong><p>Đất công viên, nguyễn du, Phường Bến Nghé, Quận 1</p><strong>Đã quy hoạch</strong>",
-                icon: "theatre",
-              },
-              geometry: {
-                type: "Point",
-                coordinates: adGeo[2],
-              },
-            },
-          ],
-        },
-      });
+    map.current.on("load", async () => {
+      console.log("da load");
 
-      //new souce
-      map.current.addSource("places-new", {
-        // This GeoJSON contains features that include an "icon"
-        // property. The value of the "icon" property corresponds
-        // to an image in the Mapbox Streets style's sprite.
-        type: "geojson",
-        data: {
-          type: "FeatureCollection",
-          features: [
-            {
-              type: "Feature",
-              properties: {
-                loc_id: 1,
-                description:
-                  "<strong>Cổ động chính trị</strong><p>Đất công viên, nguyễn du, Phường Bến Nghé, Quận 1</p><strong>Đã quy hoạch</strong>",
-                icon: "theatre",
-              },
-              geometry: {
-                type: "Point",
-                coordinates: adGeo[0],
-              },
-            },
-          ],
-        },
-      });
+      //add icon
+      const nameImg = ["report", "plan", "planed"];
+      const nameSrc = [
+        "./src/assets/qc1.png",
+        "./src/assets/qc2.png",
+        "./src/assets/qc3.png",
+      ];
+
+      for (let i = 0; i < nameImg.length; i++) {
+        const name = nameImg[i];
+        const src = nameSrc[i];
+
+        // Create a new Image object for each image
+        const img = new Image();
+
+        // Handle image loading
+        img.onload = () => {
+          map.current.addImage(name, img); // Add the image to the map
+        };
+
+        // Set the image source
+        img.src = src;
+      }
+
+      const locations = await hostAxios
+        .post("/advertisinglocations")
+        .then((res) =>
+          res.data.map((ad) => [
+            ad.location_id,
+            ad.advertising_methods_name,
+            ad.positiontype_name,
+            ad.address,
+            ad.is_planning,
+            ad.wards_fullname,
+            ad.districts_fullname,
+            ad.reportviolations_id,
+            [ad.lng, ad.lat],
+          ])
+        );
+
+      const geoJson = await createGeoJson(locations);
+      setAdLocation(locations);
+
+      map.current.addSource("places", geoJson);
 
       // Add a layer showing the places.
       map.current.addLayer({
@@ -172,28 +187,14 @@ const Mapbox = () => {
       // When a click event occurs on a feature in the places layer, open a popup at the
       // location of the feature, with description HTML from its properties.
       map.current.on("click", "places", (e) => {
-        console.log("da click marker");
+        const loc_id = e.features[0].properties.loc_id;
+        const ward = e.features[0].properties.wards;
+        const district = e.features[0].properties.districts;
 
-        // Copy coordinates array.
-        // const coordinates = e.features[0].geometry.coordinates.slice();
-        // const description = e.features[0].properties.description;
-        // const loc_id = e.features[0].properties.loc_id;
-
-        // // Ensure that if the map is zoomed out such that multiple
-        // // copies of the feature are visible, the popup appears
-        // // over the copy being pointed to.
-        // while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-        //   coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-        // }
-        // new mapboxgl.Popup({
-        //   className: "mapboxgl-popup",
-        //   offset: [0, -10],
-        //   closeButton: false,
-        // })
-        //   .setLngLat(coordinates)
-        //   .setHTML(description)
-        //   .addTo(map.current);
-        navigate.push("/adboardlistloc");
+        navigate.push({
+          pathname: "/adboardlistloc",
+          state: { loc_id: loc_id, ward: ward, district: district },
+        });
       });
 
       map.current.on("click", (e) => {
@@ -206,7 +207,7 @@ const Mapbox = () => {
             )
             .then((res) => {
               const address = res.data.features[0]["place_name"];
-              var button = `<button id="report" type="submit" className="button" onClick={${handleClick()}}>Button</button>`;
+              var button = `<button id="report" type="submit" className="button" onClick={${handleClick()}}>Báo cáo vi phạm</button>`;
               popup = new mapboxgl.Popup({
                 className: "mapboxgl-popup",
                 offset: [0, -10],
@@ -235,14 +236,11 @@ const Mapbox = () => {
         flag = true;
         popup = new mapboxgl.Popup({
           className: "mapboxgl-popup",
-          offset: [0, -10],
           closeButton: false,
         })
           .setLngLat(coordinates)
           .setHTML(description)
           .addTo(map.current);
-
-        //nếu tồn tại report của location id này
       });
 
       // Change it back to a pointer when it leaves.
@@ -257,6 +255,15 @@ const Mapbox = () => {
         setLat(map.current.getCenter().lat.toFixed(4));
         setZoom(map.current.getZoom().toFixed(2));
       });
+    });
+
+    map.current.on("styleimagemissing", (e) => {
+      console.log("loading missing image: " + e.id);
+      let img = new Image();
+      img.onload = () => {
+        map.current.addImage(e.id, img);
+      };
+      img.src = "./src/assets/react.svg";
     });
   });
 
