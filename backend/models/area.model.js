@@ -148,9 +148,10 @@ export async function search(con, page) {
 export async function findDistrictByUserId(id) {
     const result =  await db(TABLE)
             .where({user_id: id})
+            .leftJoin("districts", "areas.district_code", "=", "districts.code")
             .where("states", "=", "new")
             .where("is_delete", "<>", true)
-            .select("district_code")
+            .select("districts.full_name")
             .first();
 
             console.log(result);
@@ -164,10 +165,11 @@ export async function findDistrictByUserId(id) {
 
 export async function findWardsByUserId(id) {
     const result =  await db(TABLE)
+            .leftJoin("wards", "areas.ward_code", "=", "wards.code")
             .where({user_id: id})
             .where("states", "=", "new")
             .where("is_delete", "<>", true)
-            .select("ward_code")
+            .select("wards.full_name")
 
             console.log(result);
 

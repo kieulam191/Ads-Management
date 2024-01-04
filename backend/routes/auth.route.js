@@ -1,5 +1,6 @@
 import { Router } from "express";
 import * as accountModel  from '../models/account.model.js';
+import * as areaModel  from '../models/area.model.js';
 import bcrypt from "bcrypt";
 import generateTokens from "../utils/generateTokens.js";
 import {verifyRefreshToken, deleteRefreshToken} from "../utils/verifyRefreshToken.js";
@@ -55,12 +56,18 @@ router.post("/signin", async (req, res) => {
                 .status(400)
                 .json({ error: true, message: "Invalid username or password" });
         const { accessToken, refreshToken } = await generateTokens(user.username,user.password);
+
+        const resultWards = await areaModel.findWardsByUserId(user.user_id);
+        const resultDistrict = await areaModel.findDistrictByUserId(user.user_id);
+        const wards = resultWards.map(ward => ward.full_name)
         res.json({
             error: false,
             accessToken,
             refreshToken,
             message: "Logged in sucessfully",
-            role_type: user.role_type
+            role_type: user.role_type,
+            districts: resultDistrict.full_name,
+            wards: wards,
 
         });
     } catch (err) {
