@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 //import ReactMapboxGl from "react-mapbox-gl";
 import { token } from "../../constains/token";
 import mapboxgl from "mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
@@ -20,7 +20,7 @@ const Mapbox = () => {
   const [adLocation, setAdLocation] = useState([]);
   const { state, dispatch } = useContext(AppContext);
 
-  const navigate = useHistory();
+  const navigate = useNavigate();
   let flag = false;
   let popup;
 
@@ -191,8 +191,7 @@ const Mapbox = () => {
         const ward = e.features[0].properties.wards;
         const district = e.features[0].properties.districts;
 
-        navigate.push({
-          pathname: "/adboardlistloc",
+        navigate("/adboardlistloc", {
           state: { loc_id: loc_id, ward: ward, district: district },
         });
       });

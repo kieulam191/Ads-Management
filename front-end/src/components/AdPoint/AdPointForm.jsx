@@ -1,30 +1,30 @@
-import React, { useEffect, useContext } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
-import { useFormik } from 'formik';
-import axios from '../../services/api';
-import { AppContext } from '../../context/AppContext';
+import React, { useEffect, useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import axios from "../../services/api";
+import { AppContext } from "../../context/AppContext";
 
 const AdPointForm = () => {
   const { id } = useParams();
-  const history = useHistory();
+  const history = useNavigate();
   const { state, dispatch } = useContext(AppContext);
 
   const formik = useFormik({
     initialValues: {
-      board_id: '',
-      location_id: '',
-      board_type: '',
-      size: '',
+      board_id: "",
+      location_id: "",
+      board_type: "",
+      size: "",
     },
     validate: (values) => {
       const errors = {};
 
       if (!values.board_type) {
-        errors.board_type = 'Required';
+        errors.board_type = "Required";
       }
 
       if (!values.size) {
-        errors.size = 'Required';
+        errors.size = "Required";
       }
       return errors;
     },
@@ -32,13 +32,13 @@ const AdPointForm = () => {
       if (id) {
         await axios.put(`/adpoints/${id}`, values);
       } else {
-        await axios.post('/adpoints', values);
+        await axios.post("/adpoints", values);
       }
 
-      const response = await axios.get('/adpoints');
-      dispatch({ type: 'SET_AD_POINTS', payload: response.data });
+      const response = await axios.get("/adpoints");
+      dispatch({ type: "SET_AD_POINTS", payload: response.data });
 
-      history.push('/adpoints');
+      history("/adpoints");
     },
   });
 
@@ -55,9 +55,9 @@ const AdPointForm = () => {
 
   return (
     <div>
-      <h2>{id ? 'Edit' : 'Add'} Ad Point</h2>
+      <h2>{id ? "Edit" : "Add"} Ad Point</h2>
       <form onSubmit={formik.handleSubmit}>
-      <label>
+        <label>
           Board Type:
           <input
             type="text"
@@ -84,7 +84,7 @@ const AdPointForm = () => {
             <div>{formik.errors.size}</div>
           ) : null}
         </label>
-        <button type="submit">{id ? 'Update' : 'Add'} Ad Point</button>
+        <button type="submit">{id ? "Update" : "Add"} Ad Point</button>
       </form>
     </div>
   );

@@ -1,12 +1,12 @@
 // SignUpButton.js
 import React from "react";
 import "../Button.css";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const SignUpButton = () => {
-  const history = useHistory();
+  const history = useNavigate();
   const handleClick = () => {
-    history.push("/officers/signup");
+    history("/officers/signup");
   };
   return (
     <button onClick={handleClick} className="sign-up-button">

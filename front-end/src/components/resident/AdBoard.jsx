@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./AdBoard.css";
 
 const AdBoardInfo = (props) => {
-  const navigte = useHistory();
+  const navigte = useNavigate();
   const [adDetail, setAdDetail] = useState([]);
 
   const handleClick = () => {
-    navigte.push({ pathname: "/reports", state: { ad: props.ad } });
+    navigte("/reports", { state: { ad: props.ad } });
   };
 
   const getFormattedDate = (dateStr) => {

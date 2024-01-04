@@ -1,12 +1,12 @@
 import React, { useEffect, useContext } from "react";
-import { useParams, useHistory, useLocation } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useFormik } from "formik";
 import axios from "../../../services/api";
 import { AppContext } from "../../../context/AppContext";
 
 const ReportForm = (props) => {
   const { id } = useParams();
-  const history = useHistory();
+  const history = useNavigate();
   const location = useLocation();
   const { state, dispatch } = useContext(AppContext);
 
