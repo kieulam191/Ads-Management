@@ -40,7 +40,7 @@ router.post('/update', async (req, res) => {
         console.log(e.stack);
         return res.status(400);
     }
-}
+});
 
 router.post('/delete', async (req,res) => {
     try{
