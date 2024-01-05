@@ -38,6 +38,10 @@ export async function  findAll(wards,districts_fullname){
 
 }
 
+export async function  update(id,data){
+    return await db('reportviolations').where('id',id).update(data);
+}
+
 export async function  add(data){
     return await db('reportviolations').insert(data);
     // .join("adstype", "adstype.id",TABLE.)
@@ -69,3 +73,5 @@ export async function  findById(id){
     })
 
 }
+
+
