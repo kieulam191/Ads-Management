@@ -135,3 +135,14 @@ export async function  findById(id){
     })
 
 }
+
+export async function findByAddress(address) {
+    console.log(address);
+    const whereCondition = 'LOWER(advertisinglocations.address) LIKE ?'
+    const result = await db(TABLE).whereRaw(whereCondition, `%${address.toLowerCase()}%`)
+    if(result.length === 0) {
+        return null;
+    }
+
+    return result;
+}
