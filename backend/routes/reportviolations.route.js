@@ -24,6 +24,20 @@ router.post('/add', async (req, res) => {
     
 });
 
+router.post('/update', async (req, res) => {
+    try{
+        let id = req.body.id; // Get id and data from request body
+        let data = req.body.data;
+        const result = await reportviolationsModel.update(id, data);
+        return res.status(200).json({ msg: "Success" });
+    }
+    catch(e)
+    {
+        console.log(e.stack);
+        return res.status(400);
+    }
+});
+
 router.post('/id', async (req,res) => {
     try{
         let id = req.body.id || 0;
