@@ -14,6 +14,7 @@ import dictrictRouter from './routes/district.route.js';
 import wardRouter from './routes/ward.route.js'
 import advertisinglocationsRouter from './routes/advertisinglocations.route.js';
 import reportviolationsRouter from './routes/reportviolations.route.js';
+import adsCompanyRouter from './routes/adsCompany.route.js';
 const app = express()
 const PORT = 3000
 app.use(express.json())
@@ -34,5 +35,6 @@ app.use('/dictricts',dictrictRouter);
 app.use('/wards',wardRouter);
 app.use('/advertisinglocations',advertisinglocationsRouter);
 app.use('/reportviolations',reportviolationsRouter);
+app.use('/adsCompany',adsCompanyRouter);
 app.listen(PORT, () => console.log(`app listening at http://localhost:${PORT}`))
 
