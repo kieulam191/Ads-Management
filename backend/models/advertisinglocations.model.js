@@ -146,3 +146,18 @@ export async function findByAddress(address) {
 
     return result;
 }
+
+//update thông tin quảng cáo 
+//sau khi sở văn hóa chấp nhận sự thay đổi quảng cáo được gửi lên
+export async function updateAfterApprove(data) {
+    const result = await db(TABLE).where({
+        location_id: data.ad_id
+    }).update({
+        address: data.address,
+        advertising_type: data.ad_table_type,
+        advertising_method: data.ad_type
+    });
+
+    return result;
+}
+
