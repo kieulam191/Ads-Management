@@ -26,6 +26,7 @@ app.use(authMDW);
 
 app.use('/accounts', accountRouter)
 app.use('/areas', areaRouter)
+app.use('/ads/requests',adsReq);
 app.use('/ads', adsRouter)
 app.use('/reports', reportRouter)
 app.use('/pos/', positionRouter)
@@ -37,6 +38,5 @@ app.use('/wards',wardRouter);
 app.use('/advertisinglocations',advertisinglocationsRouter);
 app.use('/reportviolations',reportviolationsRouter);
 app.use('/adsCompany',adsCompanyRouter);
-app.use('/ads/requests',adsReq);
 app.listen(PORT, () => console.log(`app listening at http://localhost:${PORT}`))
 
