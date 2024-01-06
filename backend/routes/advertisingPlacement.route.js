@@ -1,5 +1,6 @@
 import express from 'express';
 import * as advertisingPlacementModel from '../models/advertisingPlacement.model.js'
+import imgMdw from '../middlewares/img.mds.js';
 
 const router = express.Router();
 
@@ -68,6 +69,13 @@ router.post('/update', async (req,res) => {
         return res.status(400);
     }
 });
+
+router.post("/upload/images",imgMdw.single("image"), async (req, res) => {
+
+    return res.status(201).json({
+        msg: "upload file successfuly"
+    })
+})
 
 
 export default router;
