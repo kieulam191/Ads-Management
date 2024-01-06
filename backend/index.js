@@ -18,11 +18,17 @@ import adsReq from './routes/adsReq.router.js';
 import adsCompanyRouter from './routes/adsCompany.route.js';
 import advertisingPlacementRouter from './routes/advertisingPlacement.route.js';
 import advertisingBoardRouter from './routes/advertisingBoard.route.js';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
 const app = express()
 const PORT = 3000
 app.use(express.json())
 app.use(cors())
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+app.use('/images', express.static(__dirname + '/images'));
 // user auth
 app.use(authMDW);
 
