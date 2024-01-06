@@ -15,6 +15,7 @@ import wardRouter from './routes/ward.route.js'
 import advertisinglocationsRouter from './routes/advertisinglocations.route.js';
 import reportviolationsRouter from './routes/reportviolations.route.js';
 import adsCompanyRouter from './routes/adsCompany.route.js';
+import { loggerReq, loggerErr } from './middlewares/winston.mdw.js'
 const app = express()
 const PORT = 3000
 app.use(express.json())
@@ -22,6 +23,7 @@ app.use(cors())
 
 // user auth
 app.use(authMDW);
+app.use(loggerReq)
 
 app.use('/accounts', accountRouter)
 app.use('/areas', areaRouter)
@@ -36,5 +38,7 @@ app.use('/wards',wardRouter);
 app.use('/advertisinglocations',advertisinglocationsRouter);
 app.use('/reportviolations',reportviolationsRouter);
 app.use('/adsCompany',adsCompanyRouter);
+
+app.use(loggerErr)
 app.listen(PORT, () => console.log(`app listening at http://localhost:${PORT}`))
 
