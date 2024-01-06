@@ -16,6 +16,8 @@ import advertisinglocationsRouter from './routes/advertisinglocations.route.js';
 import reportviolationsRouter from './routes/reportviolations.route.js';
 import adsReq from './routes/adsReq.router.js';
 import adsCompanyRouter from './routes/adsCompany.route.js';
+import advertisingPlacementRouter from './routes/advertisingPlacement.route.js';
+import advertisingBoardRouter from './routes/advertisingBoard.route.js';
 const app = express()
 const PORT = 3000
 app.use(express.json())
@@ -37,6 +39,9 @@ app.use('/dictricts',dictrictRouter);
 app.use('/wards',wardRouter);
 app.use('/advertisinglocations',advertisinglocationsRouter);
 app.use('/reportviolations',reportviolationsRouter);
+app.use('/advertisingPlacement',advertisingPlacementRouter); // điểm đặt quảng cáo
 app.use('/adsCompany',adsCompanyRouter);
+app.use('/advertisingBoard',advertisingBoardRouter); // bảng quảng cáo
+
 app.listen(PORT, () => console.log(`app listening at http://localhost:${PORT}`))
 
