@@ -119,3 +119,15 @@ export async function update(id,data) {
 
     return result;
 }
+
+export async function findUrlById(id) {
+    const result = await db(TABLE).where({
+        id: id
+    }).select('url');
+
+    if(result[0].length === 0) {
+        return null;
+    }
+
+    return result[0];
+}

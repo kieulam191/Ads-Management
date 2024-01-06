@@ -15,6 +15,20 @@ router.get('/', async (req, res) => {
     return res.status(200).json(result[0]);
 })
 
+
+//Lấy ảnh của điểm đặt quảng cáo
+router.get('/images/:id', async (req, res) => {
+    const id = +req.params.id || 0;
+
+    const result = await advertisingPlacementModel.findUrlById(id);
+
+    if(result === null) {
+        return res.status(204).end();
+    }
+
+    return res.status(200).sendFile(result.url);
+})
+
 router.post('/', async (req, res) => {
     try{
     let wards = req.body.wards;
