@@ -2,7 +2,8 @@ import jwt from "jsonwebtoken";
 
 const auth = async (req, res, next) => {
 	let accountsUrl = /^\/accounts\//;
-	if(req.path === '/auth/signup' || req.path === '/auth/signin' || accountsUrl.test(req.path)){
+	let imagesUrl = /^\/images\//;
+	if(req.path === '/auth/signup' || req.path === '/auth/signin' || accountsUrl.test(req.path) || imagesUrl.test(req.path)){
 		return next()
 	}
 	var token = req.headers.authorization;

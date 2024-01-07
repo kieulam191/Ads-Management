@@ -28,7 +28,7 @@ app.use(cors())
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-app.use('/images', express.static(__dirname + '/images'));
+
 // user auth
 app.use(authMDW);
 
@@ -48,6 +48,9 @@ app.use('/reportviolations',reportviolationsRouter);
 app.use('/advertisingPlacement',advertisingPlacementRouter); // điểm đặt quảng cáo
 app.use('/adsCompany',adsCompanyRouter);
 app.use('/advertisingBoard',advertisingBoardRouter); // bảng quảng cáo
+
+//floder images public
+app.use('/images', express.static(__dirname + '/images'));
 
 app.listen(PORT, () => console.log(`app listening at http://localhost:${PORT}`))
 
