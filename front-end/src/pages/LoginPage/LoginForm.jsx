@@ -32,7 +32,7 @@ const LoginForm = () => {
         .then((res) => {
           console.log(res.data);
           const accessToken = res.data.accessToken;
-          sessionStorage.setItem('access_token', accessToken);
+          localStorage.setItem('access_token', accessToken);
           goRouter('/')
         })
         .catch((err) => {

@@ -29,6 +29,7 @@ const HomePage = () => {
       getItem('Quản lý QC', '2','/ads-manage', <UnorderedListOutlined />),
       getItem('Cập nhật QC', '3','/update-ads', <FormOutlined />),
       getItem('Quản lý RP', '4','/reports-manage', <UnorderedListOutlined />),
+      //getItem('Quản lý RP', '4','/reports-manage', <UnorderedListOutlined />),
       //getItem('Đăng xuất', '5','/logout', <UnorderedListOutlined />),
     ];
 

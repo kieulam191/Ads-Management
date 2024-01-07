@@ -2,7 +2,9 @@
     height: 100vh;
 }
 
-
+.mapboxgl-popup-content{
+    background-color: aqua;
+}
 
 .container{
     height: 100%;

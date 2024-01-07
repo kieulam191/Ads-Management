@@ -1,20 +1,27 @@
-import { useRef, useEffect, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRef, useEffect, useState } from "react";
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import mapboxgl from "mapbox-gl"; 
+import axios from "axios";
 
 import { token } from "../../constains/token";
-import { AppContext } from "../../context/AppContext";
-import Report from "../resident/report/ReportList";
-import axios from "axios";
+
+
+
+import {
+  StarOutlined,
+} from '@ant-design/icons';
 
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import "./mapbox.css";
 
 mapboxgl.accessToken = token;
 
-const Mapbox = () => {
+const nameImage = 'Be'
+const srcImage = 'https://unsplash.com/fr/photos/blanc-et-rouge-betail-traversant-signe-photographie-en-gros-plan-2ayzQETlloM'
+
+const Mapbox = ({places, userLocation}) => {
   const mapContainer = useRef(null);
+
   const map = useRef(null);
   const [lng, setLng] = useState(106.6822);
   const [lat, setLat] = useState(10.7623);
@@ -22,12 +29,42 @@ const Mapbox = () => {
 
   let popup;
 
+
+
+  const createGeoJson = async (data) => {
+    const geoJson = {
+      type: "geojson",
+      data: {
+        type: "FeatureCollection",
+        features: data.map((value) => {
+          return {
+            type: "Feature",
+            properties: {
+              id: value.id,
+              url: value.url,
+              address: value.address,
+              positiontype_name: value.positiontype_name,
+              districts_fullname: value.districts_fullname,
+              wards_fullname: value.wards_fullname,
+              planned: value.planned
+            },
+            geometry: {
+              type: "Point",
+              coordinates: [value.lng, value.lat],
+            },
+          };
+        }),
+      },
+    };
+    return await geoJson;
+  };
+
   useEffect(() => {
     if (map.current) return; // initialize map only once
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/streets-v12",
-      center: [lng, lat],
+      center: [userLocation?.lng, userLocation?.lat],
       zoom: zoom,
     });
 
@@ -50,14 +87,79 @@ const Mapbox = () => {
               .setLngLat(e.lngLat)
               .setHTML(`<p>${address}}</p>${button}`)
               .addTo(map.current);
-            document
-              .getElementById("report")
-              .addEventListener("click", () => {
-                navigate("/reports");
-              });
           });
         }
     });
+
+    map.current.on('load', async (e) => {
+      const marker = new mapboxgl.Marker({draggable: true})
+        .setLngLat(userLocation)
+        .addTo(map.current)
+
+      if(places){
+        const img = new Image();
+        img.onload = () => {
+          map.current.addImage(nameImage,srcImage);
+        };
+
+        const geoJson = await createGeoJson(places);
+        console.log("geojson: ", geoJson.data)
+        map.current.addSource("places", geoJson); 
+
+
+         // Add a layer showing the places.
+        map.current.addLayer({
+          // Add a new layer to the map style: https://docs.mapbox.com/mapbox-gl-js/api/#map#addlayer
+          id: 'places',
+          type: 'circle',
+          source: 'places', // Set the layer source
+          paint: {
+            'circle-stroke-color': 'white',
+            'circle-stroke-width': {
+              // Set the stroke width of each circle: https://docs.mapbox.com/style-spec/reference/layers/#paint-circle-circle-stroke-width
+              stops: [
+                [0, 5],
+                [18, 10]
+              ],
+              base: 20
+            },
+            'circle-radius': {
+              // Set the radius of each circle, as well as its size at each zoom level: https://docs.mapbox.com/style-spec/reference/layers/#paint-circle-circle-radius
+              stops: [
+                [12, 5],
+                [22, 180]
+              ],
+              base: 5
+            },
+            'circle-color': [
+              // Specify the color each circle should be
+              'match', // Use the 'match' expression: https://docs.mapbox.com/style-spec/reference/expressions/#match
+              ['get', 'STORE_TYPE'], // Use the result 'STORE_TYPE' property
+              'Small Grocery Store',
+              '#008000',
+              'Supercenter',
+              '#008000',
+              'Superette',
+              '#008000',
+              'Supermarket',
+              '#008000',
+              'Warehouse Club Store',
+              '#008000',
+              'Specialty Food Store',
+              '#9ACD32',
+              'Convenience Store',
+              '#FF8C00',
+              'Convenience Store With Gas',
+              '#FF8C00',
+              'Pharmacy',
+              '#FF8C00',
+              '#FF0000' // any other store type
+            ],
+          }
+        });
+      }
+    
+    })
 
 
     map.current.addControl(
@@ -75,15 +177,18 @@ const Mapbox = () => {
       setZoom(map.current.getZoom().toFixed(2));
     });
 
+    // Clean up the map instance on component unmount
   });
 
   return (
-    <div className="map-box">
-      <div className="sidebar">
-        Kinh độ: {lng} | Vĩ độ: {lat} | Zoom: {zoom}
+    <>
+      <div className="map-box">
+        <div className="sidebar">
+          Kinh độ: {lng} | Vĩ độ: {lat} | Zoom: {zoom}
+        </div>
+        <div ref={mapContainer} className="container" />
       </div>
-      <div ref={mapContainer} className="container" />
-    </div>
+    </>
   );
 };
 
