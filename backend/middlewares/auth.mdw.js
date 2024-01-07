@@ -3,9 +3,9 @@ import jwt from "jsonwebtoken";
 const auth = async (req, res, next) => {
 	let accountsUrl = /^\/accounts\//;
 	let imagesUrl = /^\/images\//;
-	res.header("Access-Control-Allow-Origin", "YOUR-DOMAIN.TLD");
-	res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	res.setHeader('Access-Control-Allow-Origin','*');
+    res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,PATCH,DELETE');
+    res.setHeader('Access-Control-Allow-Methods','Content-Type','Authorization');
 	if(req.path === '/auth/signup' || req.path === '/auth/signin' || accountsUrl.test(req.path) || imagesUrl.test(req.path)){
 		return next()
 	}

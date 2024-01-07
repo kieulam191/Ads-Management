@@ -35,11 +35,12 @@ export async function findByEmail(email) {
     return user[0];
 }
 
-export async function insert(email, password, role_type) {
+export async function insert(username, password, role_type,email) {
     return await db(TABLE).insert({
         username: email,
         password: password,
         role_type: role_type,
+        email: email
     });
 }
 

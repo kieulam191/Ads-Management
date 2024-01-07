@@ -17,6 +17,7 @@ router.post("/signup", async (req, res) => {
     try {
         const username = req.body.username;
         const role_type =+ req.body.role_type || 1;
+        const email = req.body.email;
         const account = await accountModel.findByEmail(username);
         if (account)
             return res
@@ -26,7 +27,7 @@ router.post("/signup", async (req, res) => {
         const salt = await bcrypt.genSalt(Number(5));
         const hashPassword = await bcrypt.hash(req.body.password, salt);
         
-        await accountModel.insert(username, hashPassword, role_type);
+        await accountModel.insert(username, hashPassword, role_type,email);
         //mailUtil.sendMail(email, hashPassword); 
         res.json({
             error:false,
