@@ -21,6 +21,7 @@ import advertisingPlacementRouter from './routes/advertisingPlacement.route.js';
 import advertisingBoardRouter from './routes/advertisingBoard.route.js';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { loggerReq, loggerErr } from './middlewares/winston.mdw.js'
 
 const app = express()
 const PORT = 3000
@@ -37,6 +38,7 @@ const __dirname = dirname(__filename);
 
 // user auth
 app.use(authMDW);
+app.use(loggerReq)
 
 app.use('/accounts', accountRouter)
 app.use('/areas', areaRouter)
@@ -58,6 +60,7 @@ app.use('/advertisingBoard',advertisingBoardRouter); // bảng quảng cáo
 
 //floder images public
 app.use('/images', express.static(__dirname + '/images'));
+app.use(loggerErr)
 
 app.listen(PORT, () => console.log(`app listening at http://localhost:${PORT}`))
 
