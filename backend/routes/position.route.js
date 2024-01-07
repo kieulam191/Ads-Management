@@ -4,6 +4,9 @@ import * as positionModel from '../models/position.model.js'
 const router =express.Router();
 
 router.get('/', async (req, res) => {
+    /*
+        #swagger.description = 'Lấy tất cả loại vị trí'
+     */
     let page = +req.query.page || 1;
 
     if(page < 1) page = 1;
@@ -14,6 +17,9 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
+      /*
+        #swagger.description = 'Lấy loại vị trí dựa vào id'
+     */
     const id = +req.params.id || 0;
     const data = await positionModel.findById(id);
 
@@ -26,6 +32,9 @@ router.get('/:id', async (req, res) => {
 
 
 router.post('/', async (req, res) => {
+      /*
+        #swagger.description = 'Thêm mới loại vị trí'
+     */
     const name = req.body.name;
 
     const result = await positionModel.insert(name);
@@ -42,7 +51,9 @@ router.post('/', async (req, res) => {
 }) 
 
 router.patch('/:id', async (req, res) => {
-
+     /*
+        #swagger.description = 'Thay đổi mới loại vị trí dựa vào id'
+     */
     const id = +req.params.id || 0;
     const { name } = req.body;
 
@@ -60,6 +71,9 @@ router.patch('/:id', async (req, res) => {
 })
 
 router.delete('/:id', async (req, res) => {
+     /*
+        #swagger.description = 'Xóa loại vị trí dựa vào id'
+     */
     const id = +req.params.id || 0;
 
     const result = await positionModel.remove(id);

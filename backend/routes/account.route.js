@@ -27,29 +27,32 @@ router.get('/', async (req, res) => {
     )
 })
 
-router.post('/', accountMdw.checkAcccountValid, accountMdw.checkAccountExists, async (req, res) => {
-    const email = req.body.email;
-    const role_type = +req.body.role_type || 1;
+// router.post('/', accountMdw.checkAcccountValid, accountMdw.checkAccountExists, async (req, res) => {
+//     const email = req.body.email;
+//     const role_type = +req.body.role_type || 1;
 
-    const gen_password = generator.generate({
-        length: process.env.PASSWORD_LENGTH || 16,
-        uppercase: true,    
-        lowercase: true,
-        numbers: true,
-    })
+//     const gen_password = generator.generate({
+//         length: process.env.PASSWORD_LENGTH || 16,
+//         uppercase: true,    
+//         lowercase: true,
+//         numbers: true,
+//     })
    
-    const salt = await bcrypt.genSalt(Number(5));
-    const hashPassword = await bcrypt.hash(gen_password, salt);
+//     const salt = await bcrypt.genSalt(Number(5));
+//     const hashPassword = await bcrypt.hash(gen_password, salt);
 
-    await accountModel.insert(email, hashPassword, role_type);   
-    mailUtil.sendMail(email, gen_password); 
+//     await accountModel.insert(email, hashPassword, role_type);   
+//     mailUtil.sendMail(email, gen_password); 
 
-    res.status(201).json({
-        msg: "Account created successfully."
-    });
-});
+//     res.status(201).json({
+//         msg: "Account created successfully."
+//     });
+// });
 
 router.get("/:id/actives", async (req, res) => {
+     /*
+        #swagger.description = 'Kiểm tra tài khoản đã kích hoạt'
+     */ 
     const id = +req.params.id || 0;
 
     const state = await accountModel.getActiveAccount(id);
@@ -71,7 +74,10 @@ router.get("/:id/actives", async (req, res) => {
 })
 
 router.post("/:id/assignments/:role_type", areaValidate, async (req, res) => {
-   const user_id = +req.params.id || 0;
+     /*
+        #swagger.description = 'Cấp quyền role cho user_id'
+     */ 
+    const user_id = +req.params.id || 0;
    const {province_code, district_code, wards}= req.body;
 
     const timestamp = ts.getTS();
@@ -88,6 +94,9 @@ router.post("/:id/assignments/:role_type", areaValidate, async (req, res) => {
 });
 
 router.post('/forgot-password', accountMdw.checkEmailValid, async (req, res) => {
+    /*
+        #swagger.description = 'Quên mật khẩu'
+     */ 
     const email = req.body.email;
 
     const otp_code = generator.generate({
@@ -118,6 +127,9 @@ router.post('/forgot-password', accountMdw.checkEmailValid, async (req, res) => 
 })
 
 router.post('/verify-otp', accountMdw.checkOTPValid, async (req, res) => {
+    /*
+        #swagger.description = 'Xác thực OTP code'
+     */ 
     const email = req.body.email;
     const otp_receive = req.body.otp;
     const min_receive = +ts.getMinute();
@@ -152,6 +164,9 @@ router.post('/verify-otp', accountMdw.checkOTPValid, async (req, res) => {
 })
 
 router.patch('/reset-password/:reset_code', accountMdw.checkPasswordValid, async (req, res) => {
+    /*
+        #swagger.description = 'Thay đổi mật khẩu sau khi xác thực OTP thành công'
+     */ 
     const { new_password } = req.body;
     const code = req.params.reset_code;
     
@@ -181,6 +196,9 @@ router.patch('/reset-password/:reset_code', accountMdw.checkPasswordValid, async
 })
 
 router.patch('/:id/profiles', async (req, res) => {
+    /*
+        #swagger.description = 'Thay đổi thông tin profile'
+     */ 
     const id = +req.params.id || 0;
     const data = accountModel.updateProfile(id, req.body);
 

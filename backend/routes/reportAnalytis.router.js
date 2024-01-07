@@ -6,6 +6,9 @@ import * as ts from "../utils/timestampUtil.js"
 const router = express.Router();
 
 router.get('/', async (req, res) => {
+    /*
+        #swagger.description = 'Lấy tất cả báo cáo'
+     */
     let page = +req.query.page || 1;
 
     if(page < 1) page = 1;
@@ -16,6 +19,9 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/statistic', async (req, res) => {
+    /*
+        #swagger.description = 'thống kê báo cáo'
+     */
     const {field} = req.query;
     const timestamp = ts.convertTS();
     const data = await reportModel.analysis(field, field, timestamp);

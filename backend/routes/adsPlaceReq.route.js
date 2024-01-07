@@ -4,6 +4,9 @@ import * as advertisingPlacement from '../models/advertisingPlacement.model.js';
 const router =express.Router();
 
 router.get('/', async (req, res) => {
+    /*
+        #swagger.description = 'Lấy tất cả yêu cầu chỉnh sửa điểm đặt quảng cáo'
+     */ 
     console.log('da vao');
     const result = await adsPlaceReqModel.findAll();
 
@@ -13,6 +16,9 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:status', async (req, res) => {
+     /*
+        #swagger.description = 'Lấy trạng thái yêu cầu chỉnh sửa điểm đặt quảng cáo'
+     */
     const status = +req.params.status || 0;
     const result = await adsPlaceReqModel.findByStatus(status);
 
@@ -26,7 +32,9 @@ router.get('/:status', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-
+     /*
+        #swagger.description = 'Gửi yêu cầuchỉnh sửa điểm đặt quảng cáo đến sở vhtt'
+     */
 
     const result = await adsPlaceReqModel.insert(req.body);
 
@@ -43,6 +51,9 @@ router.post('/', async (req, res) => {
 
 //chỉ cho phép thay đổi những yêu cầu hiện tại có status là 0
 router.patch('/:id', async (req, res) => {
+     /*
+        #swagger.description = 'Thay đổi yêu cầu chỉnh sửa điểm đặt quảng cáo từ sở vhtt'
+     */
     const id = +req.params.id || 0;
     const status = req.body.new_status;
 

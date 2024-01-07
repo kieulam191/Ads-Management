@@ -6,6 +6,9 @@ import * as timestamp from '../utils/timestampUtil.js';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
+    /*
+        #swagger.description = 'Lấy danh sách khu vực quản lý user'
+     */ 
     let page = +req.query.page || 1;
 
     if(page < 1) page = 1;
@@ -18,6 +21,9 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/assigns/:user_id/districts', async (req, res) => {
+     /*
+        #swagger.description = 'Lấy thông tin quận mà user quản lý'
+     */ 
     const user_id = req.params.user_id;
 
     const district = await areaModel.findDistrictByUserId(user_id);
@@ -32,6 +38,9 @@ router.get('/assigns/:user_id/districts', async (req, res) => {
 });
 
 router.get('/assigns/:user_id/wards', async (req, res) => {
+      /*
+        #swagger.description = 'Lấy thông tin phường mà user quản lý'
+     */ 
     const user_id = req.params.user_id;
 
     const wards = await areaModel.findWardsByUserId(user_id);
@@ -46,6 +55,9 @@ router.get('/assigns/:user_id/wards', async (req, res) => {
 });
 
 router.get('/search', async (req, res) => {
+      /*
+        #swagger.description = 'Tìm kiếm thông tin về quận và phường'
+     */ 
     const {ward, district, email} = req.query;
     const con = [];
 
@@ -72,6 +84,9 @@ router.get('/search', async (req, res) => {
 
 
 router.patch('/:id/wards', async (req, res) => {
+     /*
+        #swagger.description = 'Thay đổi phường dựa vào area_id'
+     */ 
     const newWard = req.body.newWard;
     const id = +req.params.id ?? 0
     const ts = timestamp.getTS();
@@ -91,6 +106,9 @@ router.patch('/:id/wards', async (req, res) => {
 })
 
 router.delete('/:id', async (req, res) => {
+    /*
+        #swagger.description = 'xóa một khu vực dựa vào id'
+     */ 
     const id  = +req.params.id || 0;
 
     await areaModel.remove(id);
