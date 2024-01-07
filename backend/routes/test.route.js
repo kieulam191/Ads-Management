@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/', function (req, res)
 {
-     // #swagger.description = 'Test'
+     // #swagger.description = 'API test server'
     res.json(
         {
             msg: 'Hello from expressjs'

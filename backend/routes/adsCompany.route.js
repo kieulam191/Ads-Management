@@ -4,6 +4,7 @@ import * as adsCompany from '../models/adsCompany.model.js'
 const router = express.Router();
 
 router.post('/', async (req, res) => {
+    // #swagger.description = 'Lấy danh sách công ty điểm đặt theo phường xã và quận huyện'
     try {
         let wards = req.body.wards;
         let districts_fullname = req.body.districts_fullname;
@@ -16,6 +17,7 @@ router.post('/', async (req, res) => {
 });
 
 router.post('/add', async (req, res) => {
+    // #swagger.description = 'Thêm công ty điểm đặt'
     try{
         const data = await adsCompany.add(req.body);
         return res.status(200).json({msg:"Success"});
@@ -29,6 +31,7 @@ router.post('/add', async (req, res) => {
 });
 
 router.post('/update', async (req, res) => {
+    // #swagger.description = 'Cập nhật công ty điểm đặt'
     try{
         let id = req.body.id; // Get id and data from request body
         let data = req.body.data;
@@ -43,6 +46,7 @@ router.post('/update', async (req, res) => {
 });
 
 router.post('/delete', async (req,res) => {
+    // #swagger.description = 'Xóa công ty điểm đặt'
     try{
         const data = await adsCompany.deleteById(req.body.id);
         return res.status(200).json({msg:"Success"});
@@ -56,6 +60,7 @@ router.post('/delete', async (req,res) => {
 });
 
 router.post('/id', async (req,res) => {
+    // #swagger.description = 'Lấy công ty điểm đặt theo id'
     try{
         const data = await adsCompany.findById(req.body.id);
         return res.status(200).json(data ? data : {});

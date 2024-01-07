@@ -15,6 +15,7 @@ const router = Router();
 // signup
 router.post("/signup", async (req, res) => {
     try {
+        // #swagger.description = 'API Đăng kí tài khoản'
         const username = req.body.username;
         const role_type =+ req.body.role_type || 1;
         const email = req.body.email;
@@ -42,6 +43,7 @@ router.post("/signup", async (req, res) => {
 // login
 router.post("/signin", async (req, res) => {
     try {
+        // #swagger.description = 'API Đăng kí tài khoản'
         const user = await accountModel.findByUser(req.body.username);
         if (!user)
             return res
@@ -84,6 +86,7 @@ router.post("/signin", async (req, res) => {
 });
 
 router.post("/refreshtoken", async (req, res) => {
+    // #swagger.description = 'Cấp lại token'
     try{
     const {username,password}  = await verifyRefreshToken( req.body.refreshToken );
     const payload = { username : username , password:password};
@@ -106,6 +109,7 @@ router.post("/refreshtoken", async (req, res) => {
 });
 
 router.post("/deleterefreshtoken", async (req, res) => {
+    // #swagger.description = 'Xoá refresh token'
     try {
         await deleteRefreshToken (req.body.refreshToken );
         res.status(200).json({ error: false, message: "Token is deleted" });
