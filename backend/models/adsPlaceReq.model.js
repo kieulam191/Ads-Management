@@ -1,5 +1,6 @@
 import db from '../db/db.js'
-const TABLE = "ads_req"
+const TABLE = "ads_place_req"
+
 export async function insert(data) {
     const result =  await db(TABLE).insert(data);
 
@@ -43,5 +44,3 @@ export async function updateStatus(id, new_status) {
     }
    return result;
 }
-
-
