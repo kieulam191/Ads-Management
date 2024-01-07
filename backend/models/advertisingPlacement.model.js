@@ -99,14 +99,15 @@ export async function  findById(id){
 
 
 //update thông tin quảng cáo 
-//sau khi sở văn hóa chấp nhận sự thay đổi quảng cáo được gửi lên
+//sau khi sở văn hóa chấp nhận sự thay đổi dia diem quảng cáo được gửi lên
 export async function updateAfterApprove(data) {
     const result = await db(TABLE).where({
-        location_id: data.ad_id
+       id : data.ads_place_id
     }).update({
         address: data.address,
-        advertising_type: data.ad_table_type,
-        advertising_method: data.ad_type
+        positiontype_id: data.positiontype_id,
+        adstype_id: data.adstype_id,
+        is_planned: data.is_planned
     });
 
     return result;

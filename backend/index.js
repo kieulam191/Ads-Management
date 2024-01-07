@@ -15,6 +15,7 @@ import wardRouter from './routes/ward.route.js'
 import advertisinglocationsRouter from './routes/advertisinglocations.route.js';
 import reportviolationsRouter from './routes/reportviolations.route.js';
 import adsReq from './routes/adsReq.router.js';
+import adsPlaceReq from './routes/adsPlaceReq.route.js';
 import adsCompanyRouter from './routes/adsCompany.route.js';
 import advertisingPlacementRouter from './routes/advertisingPlacement.route.js';
 import advertisingBoardRouter from './routes/advertisingBoard.route.js';
@@ -40,6 +41,7 @@ app.use(authMDW);
 app.use('/accounts', accountRouter)
 app.use('/areas', areaRouter)
 app.use('/ads/requests',adsReq);
+app.use('/places/requests',adsPlaceReq);
 app.use('/ads', adsRouter)
 app.use('/reports', reportRouter)
 app.use('/pos/', positionRouter)

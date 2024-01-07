@@ -1,11 +1,11 @@
 import express from 'express';
-import * as adsReqModel from '../models/adsReq.model.js'
-import * as advertisingBoard from  "../models/advertisingBoard.model.js";
+import * as adsPlaceReqModel from '../models/adsPlaceReq.model.js'
+import * as advertisingPlacement from '../models/advertisingPlacement.model.js';
 const router =express.Router();
 
 router.get('/', async (req, res) => {
     console.log('da vao');
-    const result = await adsReqModel.findAll();
+    const result = await adsPlaceReqModel.findAll();
 
     return res.status(200).json({
         result
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:status', async (req, res) => {
     const status = +req.params.status || 0;
-    const result = await adsReqModel.findByStatus(status);
+    const result = await adsPlaceReqModel.findByStatus(status);
 
     if(result === null) {
         return res.status(204).end()
@@ -28,7 +28,7 @@ router.get('/:status', async (req, res) => {
 router.post('/', async (req, res) => {
 
 
-    const result = await adsReqModel.insert(req.body);
+    const result = await adsPlaceReqModel.insert(req.body);
 
     if(result === null) {
         return res.status(400).json('data invalid')
@@ -46,30 +46,30 @@ router.patch('/:id', async (req, res) => {
     const id = +req.params.id || 0;
     const status = req.body.new_status;
 
-    const result = await adsReqModel.updateStatus(id, status) 
+    const result = await adsPlaceReqModel.updateStatus(id, status) 
 
     if(result === null) {
        return  res.status(404).json({
-            msg: "ad request not available"
+            msg: "place request not available"
         })
     }
 
     //từ chối thay đổi
     if(status === -1) {
         return  res.status(200).json({
-            msg: "ads request was reject."
+            msg: "place request was reject."
         })
     }
 
     //đồng ý thay đổi;
     if(status === 1) {
-        console.log('dong y thay doi')
-        const data = await adsReqModel.findById(id);
-        const result = await advertisingBoard.updateAfterApprove(data);
+        const data = await adsPlaceReqModel.findById(id);
+        console.log(data);
+        const result = await advertisingPlacement.updateAfterApprove(data);
 
         if(result === 1) {
             return  res.status(200).json({
-                msg: "update data successfully"
+                msg: "palce data successfully"
             })
         }else {
             return  res.status(400).json({

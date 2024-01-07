@@ -35,3 +35,17 @@ export async function findByAdPlaId(id) {
                 });
                 
 }
+
+//update thông tin quảng cáo 
+//sau khi sở văn hóa chấp nhận sự thay đổi quảng cáo được gửi lên
+export async function updateAfterApprove(data) {
+    const result = await db(TABLE).where({
+        id: data.ad_id
+    }).update({
+        height: data.height,
+        width: data.width,
+        adstabletype_id: data.ad_table_type
+    });
+
+    return result;
+}
