@@ -5,6 +5,17 @@ import * as advertisinglocationsModel from '../models/advertisinglocations.model
 
 const router = express.Router();
 
+router.get('/', async (req, res) => {
+    const address = req.query.search;
+    const result = await advertisinglocationsModel.findByAddress(address);
+
+    if(result === null) {
+        return res.status(204).end();
+    }
+
+    return res.status(200).json(result[0]);
+})
+
 router.post('/', async (req, res) => {
     let wards = req.body.wards;
     let districts_fullname = req.body.districts_fullname;
@@ -39,5 +50,6 @@ router.post('/id', async (req,res) => {
     }
     
 });
+
 
 export default router;

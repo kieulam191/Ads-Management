@@ -46,6 +46,7 @@ const loggerReq = expressWinston.logger({
 
     transports: [
         transport,
+        new winston.transports.Console
         // new winston.transports.File({
         //     filename: 'logger/error.log',
         // }),
