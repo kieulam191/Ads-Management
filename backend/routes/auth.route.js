@@ -56,17 +56,23 @@ router.post("/signin", async (req, res) => {
                 .status(400)
                 .json({ error: true, message: "Invalid username or password" });
         const { accessToken, refreshToken } = await generateTokens(user.username,user.password);
-
+        
         const resultWards = await areaModel.findWardsByUserId(user.user_id);
         const resultDistrict = await areaModel.findDistrictByUserId(user.user_id);
-        const wards = resultWards.map(ward => ward.full_name)
+        const wards = [];
+        const district_name = '';
+        if(resultWards && resultDistrict)
+        {
+            wards = resultWards.map(ward => ward.full_name);
+            district_name = resultDistrict.full_name;
+        }
         res.json({
             error: false,
             accessToken,
             refreshToken,
             message: "Logged in sucessfully",
             role_type: user.role_type,
-            districts: resultDistrict.full_name,
+            districts: district_name,
             wards: wards,
 
         });
