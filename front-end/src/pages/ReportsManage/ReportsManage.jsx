@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { Table } from 'antd'
 import Popup from '../../components/Popup/Popup'
+import { useSelector, useDispatch } from 'react-redux'
+import { fetchReports } from '../../redux/Slice/reportSlice'
 
 import './reports.css'
 
 const ReportsManage = () => {
-    const [listReports, setList] = useState([
-        { key: 1, address: '227 Đ. Nguyễn Văn Cừ, P4, Quận 5', rp_person: 'Nguyễn Trung Hiếu', rp_time: '30/12/2023' , advertising_type: 'Cổ động chính trị 1'},
-        { key: 2, address: '227 Đ. Nguyễn Văn Cừ, P4, Quận 5', rp_person: 'Nguyễn Trung Hiếu', rp_time: '30/12/2023' , advertising_type: 'Cổ động chính trị 2'},
-        { key: 3, address: '227 Đ. Nguyễn Văn Cừ, P4, Quận 5', rp_person: 'Nguyễn Trung Hiếu', rp_time: '30/12/2023' , advertising_type: 'Cổ động chính trị 3'},
-    ]);
+    const dispatch = useDispatch();
+    const reports = useSelector(state => state.reports.reports)
+
+    const [listReports, setList] = useState(null);
     const [dataRow, setDataRow] = useState();
     const [isOpen, setOpen] = useState(false);
 
@@ -22,6 +23,24 @@ const ReportsManage = () => {
     const handleOpen = (value) => {
         setOpen(value);
     }
+
+    useEffect(() => {
+        dispatch(fetchReports())
+    }, [dispatch])
+    useEffect(() => {
+        if(reports){
+            const data = {
+                key: reports.id,
+                reporttype_name: reports.reporttype_name,
+                fullname: reports.fullname,
+                adress: reports.wards_fullname + "/" + reports.districts_fullname,
+                created: reports.created,
+                processed: reports.processed
+
+            }
+            setList(data)
+        }
+    }, [reports])
 
     const columns = [
         {
@@ -36,18 +55,18 @@ const ReportsManage = () => {
         },
         {
             title: 'Người gửi',
-            dataIndex: 'rp_person',
-            key: 'rp_person',
+            dataIndex: 'fullname',
+            key: 'fullname',
         },
         {
             title: 'Thời gian gửi',
-            dataIndex: 'rp_time',
-            key: 'rp_time',
+            dataIndex: 'created',
+            key: 'created',
         },
         {
             title: 'Loại hình báo cáo',
-            dataIndex: 'advertising_type',
-            key: 'advertising_type',
+            dataIndex: 'reporttype_name',
+            key: 'reporttype_name',
         },
     ];
 

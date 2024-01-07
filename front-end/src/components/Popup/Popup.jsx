@@ -1,18 +1,20 @@
 import {React, useState} from 'react'
 import { Card } from 'antd';
+import axios from 'axios';
 
 import './popup.css'
 
 const { Meta } = Card;
 
-const Popup = ({data, handleOpen}) => {
-    const [status, setStatus] = useState({
-        PROCESSING: true,
-        SUCCESS: false
-    });
+const Popup = ({data, handlePopup}) => {
+    const [status, setStatus] = useState(null);
 
     const btnExitClick = () => {
-        handleOpen(false);
+        handlePopup(false);
+    }
+
+    const btnUpdateClick = () => {
+
     }
 
     const handleStatus = () => {
@@ -26,20 +28,13 @@ const Popup = ({data, handleOpen}) => {
     return (
     <div className='popup'>
         <div className="card-popup">
-            <Card hoverable  cover={<img alt="ads.image" src="hình ảnh minh họa ads.image" />}>
+            <Card hoverable >
                 <div className="card-info">
-                    <Meta title="Người gửi" description={data?.rp_person}/>
+                    <Meta title="Người gửi" description={data?.fullname}/>
                     <div className="info">
-                        <Meta title="Ngày gửi" description={data?.rp_time} />
-                        <Meta title="Địa chỉ" description={data?.address} />
+                        <Meta title="Ngày gửi" description={data?.created} />
+                        <Meta title="Loại hình" description={data?.reporttype_name} />
                     </div>
-                    <Meta title="Nội dung báo cáo" 
-                            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                            Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-                            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                    />
                     <div className="status-info">
                         <Meta title="Tình trạng" 
                             description={
@@ -49,6 +44,7 @@ const Popup = ({data, handleOpen}) => {
                             }
                         />
                     </div>
+                    <button onClick={btnUpdateClick} className='btnExit'>Update</button>
                     <button onClick={btnExitClick} className='btnExit'>Thoát</button>
                 </div>
             </Card>

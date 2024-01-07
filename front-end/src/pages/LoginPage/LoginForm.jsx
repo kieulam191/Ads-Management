@@ -28,11 +28,16 @@ const LoginForm = () => {
     },
     onSubmit: async (values) => {
       await axios
-        .post("https://ads-management-backend.onrender.com/auth/signin", values)
+        .post("https://ads-management-backend.onrender.com/auth/signin", values,
+        {headers: {
+          "Authorization": 'Bearer ' + 'admin',
+          "Another-Header": "header-value",  // Add additional headers as needed
+        }})
         .then((res) => {
           console.log(res.data);
           const accessToken = res.data.accessToken;
           localStorage.setItem('access_token', accessToken);
+          localStorage.setItem('role',  role)
           goRouter('/')
         })
         .catch((err) => {

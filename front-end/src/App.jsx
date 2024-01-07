@@ -4,19 +4,29 @@ import Mapbox from "./components/Mapbox/Mapbox";
 import HomePage from './pages/CB_PHUONG/CB_PHUONG'
 import LoginForm from "./pages/LoginPage/LoginForm";
 
+import { LoadingOutlined } from '@ant-design/icons'
+
 import { fetchPlaces } from "./redux/Slice/placeSlice";
+import { fetchReports } from "./redux/Slice/reportSlice";
 
 import "./App.css";
+
+const role = localStorage.getItem('role');
 
 function App() {
   const dispatch = useDispatch();
   const places = useSelector(state => state.places.places)
+  const reports = useSelector(state => state.reports.reports)
   const status = useSelector(state => state.places.status)
 
   const [userLocation, setUserLocation] = useState(null);
   
   useEffect(() => {
     dispatch(fetchPlaces());
+ },[dispatch])
+
+  useEffect(() => {
+    dispatch(fetchReports());
  },[dispatch])
 
  useEffect(() => {
@@ -38,8 +48,8 @@ function App() {
 
  if(status == 'loading'){
   return (
-    <div>
-      <div>Loading...</div>
+    <div className="loading">
+      <LoadingOutlined />
     </div>
   )
 }
@@ -58,7 +68,8 @@ const handlePlaces = () => {
 
   return (
     <>
-      {(places.length > 0) && <Mapbox handlePlaces={handlePlaces} places={places} userLocation={userLocation} />}
+      {(role == 1) && <HomePage />}
+      {(role == 3) && <Admin />}
     </>
   )
 }

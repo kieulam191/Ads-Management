@@ -1,16 +1,35 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Table } from 'antd'
+import { useSelector, useDispatch } from 'react-redux'
+import { fetchAds } from '../../redux/Slice/adsSlice'
 
 import './adsmanage.css'
 
 const AdsManages = () => {
-    const [listAds, setList] = useState([
-        { key: 1, address: '227 Đ. Nguyễn Văn Cừ, P4, Quận 5', area: 'Quận 5', advertising_type: 'Cổ động chính trị 1'},
-        { key: 2, address: '227 Đ. Nguyễn Văn Cừ, P4, Quận 5', area: 'Quận 5', advertising_type: 'Cổ động chính trị 2'},
-        { key: 3, address: '227 Đ. Nguyễn Văn Cừ, P4, Quận 5', area: 'Quận 5', advertising_type: 'Cổ động chính trị 3'},
-        { key: 4, address: '227 Đ. Nguyễn Văn Cừ, P4, Quận 5', area: 'Quận 5', advertising_type: 'Cổ động chính trị 4'},
-        { key: 5, address: '227 Đ. Nguyễn Văn Cừ, P4, Quận 5', area: 'Quận 5', advertising_type: 'Cổ động chính trị 5'},
-    ])
+    const dispatch = useDispatch();
+    const ads = useSelector(state => state.ads.ads)
+
+    const [listAds, setList] = useState(ads)
+
+    useEffect(() => {
+        dispatch(fetchAds(21));
+    },[dispatch])
+
+    useEffect(() => {
+        if(ads){
+            const data = {
+                key: ads.id,
+                adstabletype_name: ads.adstabletype_name,
+                height: ads.height,
+                width: ads.width,
+                url: ads.url,
+                ads_company_id: ads.ads_company_id,
+                start_date: ads.start_date,
+                end_date: ads.end_date
+            }
+            setList(data)
+        }
+    },[ads])
 
     const columns = [
         {
@@ -19,19 +38,29 @@ const AdsManages = () => {
             key: 'stt',
         },
         {
-            title: 'Địa chỉ',
-            dataIndex: 'address',
-            key: 'address',
+            title: 'Loại',
+            dataIndex: 'adstabletype_name',
+            key: 'adstabletype_name',
         },
         {
-            title: 'Khu vực',
-            dataIndex: 'area',
-            key: 'area',
+            title: 'Cao',
+            dataIndex: 'height',
+            key: 'height',
         },
         {
-            title: 'Hình thức quảng cáo',
-            dataIndex: 'advertising_type',
-            key: 'advertising_type',
+            title: 'Rộng',
+            dataIndex: 'width',
+            key: 'width',
+        },
+        {
+            title: 'Ngày bắt đầu',
+            dataIndex: 'start_date',
+            key: 'start_date',
+        },
+        {
+            title: 'Ngày kết thúc',
+            dataIndex: 'end_date',
+            key: 'end_date',
         },
     ];
     return (
