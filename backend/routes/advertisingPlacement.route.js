@@ -86,6 +86,11 @@ router.post('/update', async (req,res) => {
 
 router.post("/upload/images",imgMdw.single("image"), async (req, res) => {
 
+    const id = req.body.id;
+    const url = `/images/${req.url}.jpeg`;
+
+    const result = await advertisingPlacementModel.insertImg(id, url);
+    
     return res.status(201).json({
         msg: "upload file successfuly"
     })

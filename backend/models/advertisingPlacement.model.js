@@ -132,3 +132,13 @@ export async function findUrlById(id) {
 
     return result[0];
 }
+
+export async function insertImg(id, urlImg) {
+    const result = db(TABLE).where({id: id}).update({url: urlImg});
+
+    if(result === 0) {
+        return null;
+    }
+
+    return result;
+}
