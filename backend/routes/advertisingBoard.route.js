@@ -39,6 +39,7 @@ router.post('/id', async (req,res) => {
             const data = await advertisingBoardModel.findByAdPlaId(advertising_placement_id);
             return res.status(200).json(data);
         }
+        return res.status(200).json({});
     }
     catch(e)
     {

@@ -8,6 +8,6 @@ const app = express();
 //defined router liên quan đến ads
 app.use('/types', adsTypeRouter);
 app.use('/table-types', adsTableTypeRouter);
-app.use('/', advertisingRouter);
+// app.use('/', advertisingRouter);
 
 export default app;
