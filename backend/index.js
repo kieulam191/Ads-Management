@@ -22,7 +22,8 @@ import advertisingBoardRouter from './routes/advertisingBoard.route.js';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { loggerReq, loggerErr } from './middlewares/winston.mdw.js'
-
+import swaggerUi  from 'swagger-ui-express'
+import swaggerDocument from './swagger-output.json' assert {type : "json"}
 const app = express()
 const PORT = 3000
 app.use(express.json())
@@ -35,24 +36,29 @@ app.use(cors())
 // app.use(cors(corsOrigin));
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+app.use(authMDW);
+
 
 // user auth
-app.use(authMDW);
 app.use(loggerReq)
 
+// Lâm
 app.use('/accounts', accountRouter)
 app.use('/areas', areaRouter)
 app.use('/ads/requests',adsReq);
 app.use('/places/requests',adsPlaceReq);
 app.use('/ads', adsRouter)
 app.use('/reports', reportRouter)
-app.use('/pos/', positionRouter)
+app.use('/pos/', positionRouter);
+// Minh 
 app.use('/test/',testRouter)
 app.use("/auth", authRoutes);
 app.use('/provinces',provinceRouter);
 app.use('/dictricts',dictrictRouter);
 app.use('/wards',wardRouter);
-app.use('/advertisinglocations',advertisinglocationsRouter);
+// app.use('/advertisinglocations',advertisinglocationsRouter);
 app.use('/reportviolations',reportviolationsRouter);
 app.use('/advertisingPlacement',advertisingPlacementRouter); // điểm đặt quảng cáo
 app.use('/adsCompany',adsCompanyRouter);

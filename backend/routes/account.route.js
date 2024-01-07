@@ -16,7 +16,11 @@ const router = express.Router();
 const OTP_MIN_LIMIX = 1;
 let  localStorage;
 
+
 router.get('/', async (req, res) => {
+    /*
+        #swagger.description = 'Lấy danh sách tài khoản'
+    */ 
     const data = await accountModel.findAll();
     return res.status(200).json(
         {accounts: data}

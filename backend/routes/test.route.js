@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/', function (req, res)
 {
-     // #swagger.description = 'Get all actor'
+     // #swagger.description = 'Test'
     res.json(
         {
             msg: 'Hello from expressjs'
