@@ -25,7 +25,12 @@ const app = express()
 const PORT = 3000
 app.use(express.json())
 app.use(cors())
-
+const corsOrigin ={
+    origin:'http://localhost:5173', //or whatever port your frontend is using
+    credentials:true,            
+    optionSuccessStatus:200
+}
+app.use(cors(corsOrigin));
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
